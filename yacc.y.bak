@@ -93,7 +93,7 @@
 
 
 %% 
-code : code line 
+code :  code line 
 	| 
 	;
 
@@ -101,10 +101,14 @@ code : code line
 
  line   : exp SEMICOLON   {printf (" decleration \n");}
 	| IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON	{printf( "initilization \n");}
-	| SCOPE_BRACEOPEN line SCOPE_BRACECLOSE {printf("a scope decleration \n");}
+	| SCOPE_BRACEOPEN code SCOPE_BRACECLOSE {printf("a scope decleration \n");}
 	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET Inside_loops_statments {printf(" a while loop \n");}  // the while loop
+	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line {printf(" a while loop \n");}  // the while loop
+	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET SEMICOLON {printf(" a while loop \n");}  // the while loop
 	| KEYWORD_DO SCOPE_BRACEOPEN  Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET  {printf("Do while loop \n");}// the do while loop
 	| KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment  KEYWORD_DEFAULT  COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE                      {printf("a switch case statement");} // swithc case statment 
+	| KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+	| KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
 	| datatype IDENTIFIER SEMICOLON  					   {printf("Decleration \n");} // decleartion for variable
 	| datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON {printf("ASSignment decleration \n");}
 	| KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line %prec IFX {printf( "if without else \n");}
@@ -125,10 +129,10 @@ code : code line
 
 
 Inside_loops_statments :
-		  line  
+		 SCOPE_BRACEOPEN code Inside_loops_statments SCOPE_BRACECLOSE
 		 |KEYWORD_CONTINUE SEMICOLON
 		 |KEYWORD_BREAK SEMICOLON
-
+		
 		;
 
 
@@ -156,7 +160,7 @@ value   :
 	| VALUE_BOOL {printf("boolean value \n");}
 	| VALUE_CHAR {printf("char value \n");}
 	| OPERATOR_MINUS value
-	| OPERATOR_PLUS valuen
+	| OPERATOR_PLUS value
 	
 	
 	;

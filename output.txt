@@ -1,6 +1,30 @@
+integer value 
+ a while loop with braces
+integer value 
+ a while loop has no lines 
+integer value 
+a scope decleration 
+ a while loop has one line 
+integer value 
+integer value 
+initilization 
+a scope decleration 
+ a while loop has one line 
+integer value 
+ a while loop with braces
 
  TYPE_INT 
 integer value 
+iDENtufier 
+integer value 
+ less equal than statement 
+iDENtufier 
+integer value 
+plus statement
+ TYPE_INT 
+integer value 
+ASSignment decleration 
+iDENtufier 
 syntax error
 
  Parsing faild 
