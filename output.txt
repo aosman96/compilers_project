@@ -1,0 +1,6 @@
+
+ TYPE_INT 
+integer value 
+syntax error
+
+ Parsing faild 

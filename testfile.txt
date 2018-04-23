@@ -1,0 +1,12 @@
+
+int x ;
+int y=3;
+if(x==y)
+x=x+y;
+switch(x)
+case 1:
+	x=x+1;
+case 2:
+	x=x+2 ;
+default :
+x =x+3 ;

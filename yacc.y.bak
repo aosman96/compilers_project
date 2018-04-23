@@ -1,19 +1,20 @@
 %{
+
 	void yyerror(char *s);
 	int yylex();
 
 	#include<stdio.h>
 	#include<stdlib.h>
 	#include<ctype.h>
-	#include<tokens.h>
+	FILE * test ;
 	 char * symbols[3][100000] ; // 0 ->  NAME , 1 -> TYPE , 2 -> Value
 	int symbolVal(char symbol);
 	void updateSymbolVal(char symbol , int val);
 %}
-%union { char* string; char character; int integer_number ; float float_number; bool boolean;}
+%union { char* string; char character; int integer_number ; float float_number; }
 
 //Start   ----------------------------------------------->
-%start line 
+%start code 
 
 
 // tokens ---------------------------------------->
@@ -29,7 +30,8 @@
 %token KEYWORD_WHILE 
 %token KEYWORD_DO 
 %token KEYWORD_SWITCH 
-%token KEYWORD_CASE 
+%token KEYWORD_CASE
+%token KEYWORD_DEFAULT
 %token KEYWORD_BREAK 
 %token KEYWORD_CONTINUE 
 %token KEYWORD_FOR 
@@ -64,91 +66,136 @@
 %token VALUE_INT 
 %token VALUE_FLOAT 
 %token VALUE_BOOL 
-%token VALUE_CHAR 
+%token VALUE_CHAR
+%token VALUE_STRING
 
 %token COLON 
 
-%token KEYWORD_DEFAULT
-  //end of tokens ---------------------------------------->
 
+
+  //end of tokens ---------------------------------------->
+%right OPERATOR_ASSIGNMENT
+%left LOGIC_NOT
+%left LOGIC_AND LOGIC_OR
+%left RELATION_EQUALS RELATION_NOTEQUAL RELATION_LESSER RELATION_GREATER RELATION_LESSEREQUAL RELATION_GREATEREQUAL
+%left OPERATOR_PLUS OPERATOR_MINUS 
+%left OPERATOR_MULTIPLY OPERATOR_DIVIDE 
+%nonassoc IFX
+%nonassoc KEYWORD_ELSE
 //TYPES   ----------------------------------------->
+/*
 %type <boolean> conditional_statment  VALUE_BOOL
 %type <string>  datatype 
 %type <character> VALUE_CHAR
 %type <integer_number> VALUE_INT
 %type <float_number> VALUE_FLOAT
-
+*/
 
 
 %% 
- line   : exp ';' '\n'   line                                          {printf ("result is %d\n", $1);}
-	| SCOPE_BRACEOPEN line SCOPE_BRACECLOSE  line
+code : code line 
 	| 
-        ;
+	;
 
- exp    : datatype IDENTIFIER					   {$$ = $2;}
-	| datatype IDENTIFIER OPERATOR_ASSIGNMENT value				   {$2 = $4;$$=$4}
-	| IDENTIFIER OPERATOR_PLUS IDENTIFIER                      {$$ = $1 + $3;}
-        | IDENTIFIER OPERATOR_MINUS IDENTIFIER                     {$$ = $1 - $3;}
-	| IDENTIFIER OPERATOR_MULTIPLY IDENTIFIER                  {$$ = $1 * $3;}
-	| IDENTIFIER OPERATOR_DIVIDE IDENTIFIER                    {$$ = $1 / $3;}
-	| KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line {$$ = $3 ;}
-	| KEYWORD_ELSE line  { $$ = "true"}
-	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line {$$ = $3 ;}
-	| KEYWORD_DO  line { $$=true}
-	|  KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment SCOPE_BRACECLOSE {$$= $3}
 
-        ;
 
-case_statment : KEYWORD_CASE IDENTIFIER COLON line KEYWORD_BREAK |KEYWORD_CASE IDENTIFIER COLON line  ;
-
-datatype: TYPE_INT {$$= "int"}
-	| TYPE_BOOL {$$= "boolean"}
-	| TYPE_CHAR {$$= "char"}
-	| TYPE_FLOAT {$$= "float"}
-	| TYPE_CONSTANT datatype {$$= "constant"}
-	| TYPE_STRING {$$= "string"}
+ line   : exp SEMICOLON   {printf (" decleration \n");}
+	| IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON	{printf( "initilization \n");}
+	| SCOPE_BRACEOPEN line SCOPE_BRACECLOSE {printf("a scope decleration \n");}
+	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET Inside_loops_statments {printf(" a while loop \n");}  // the while loop
+	| KEYWORD_DO SCOPE_BRACEOPEN  Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET  {printf("Do while loop \n");}// the do while loop
+	| KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment  KEYWORD_DEFAULT  COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE                      {printf("a switch case statement");} // swithc case statment 
+	| datatype IDENTIFIER SEMICOLON  					   {printf("Decleration \n");} // decleartion for variable
+	| datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON {printf("ASSignment decleration \n");}
+	| KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line %prec IFX {printf( "if without else \n");}
+	|KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line {printf("if else statment \n");}
 	
 	;
 
-value   : IDENTIFIER  
-	|  VALUE_INT 
-	|  VALUE_FLOAT 
-	|  VALUE_BOOL
-	| VALUE_CHAR
+
+ exp    :                    
+	 exp OPERATOR_MULTIPLY exp                  {printf("multiplication statement \n");}
+	| exp OPERATOR_DIVIDE exp                    {printf("division statement");}
+	| exp OPERATOR_PLUS exp                        {printf("plus statement");} // + 
+        | exp OPERATOR_MINUS exp			{printf("minus statement");}
+	| ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET {printf(" argument experation \n");}
+	| value 
+        ;
+
+
+
+Inside_loops_statments :
+		  line  
+		 |KEYWORD_CONTINUE SEMICOLON
+		 |KEYWORD_BREAK SEMICOLON
+
+		;
+
+
+
+case_statment : 
+		KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment   {printf("CAse statemnent");}
+		| 
+		;
+
+
+
+datatype: TYPE_INT    //{$$= "int"} {prinf("\n TYPE_INT");}
+	| TYPE_BOOL //{$$= "boolean"}
+	| TYPE_CHAR //{$$= "char"}
+	| TYPE_FLOAT //{$$= "float"}
+	| TYPE_CONSTANT datatype // {$$= "constant"}
+	| TYPE_STRING //{$$= "string"}
+	
+	;
+
+value   : 
+	  IDENTIFIER  {printf("iDENtufier \n");}
+	| VALUE_INT  {printf("integer value \n");}
+	| VALUE_FLOAT {printf("float value \n");}
+	| VALUE_BOOL {printf("boolean value \n");}
+	| VALUE_CHAR {printf("char value \n");}
+	| OPERATOR_MINUS value
+	| OPERATOR_PLUS valuen
+	
+	
 	;
 
 conditional_statment :
-		       VALUE_INT RELATION_GREATER VALUE_INT {if($1 > $3) $$=true; else $$=false;}
-		     | VALUE_INT RELATION_LESSER VALUE_INT {if($1 < $3) $$=true; else $$=false;}
-		     | VALUE_INT RELATION_EQUALS VALUE_INT {if($1 == $3) $$=true; else $$=false;}
-		     | VALUE_INT RELATION_NOTEQUAL VALUE_INT {if($1 != $3) $$=true; else $$=false;}
-		     | VALUE_INT RELATION_LESSEREQUAL VALUE_INT {if($1 <= $3) $$=true; else $$=false;}
-		     | VALUE_INT RELATION_GREATEREQUAL VALUE_INT {if($1 <= $3) $$=true; else $$=false;}
-		     | VALUE_FLOAT RELATION_GREATER VALUE_FLOAT {if($1 > $3) $$=true; else $$=false;}
-		     | VALUE_FLOAT RELATION_LESSER VALUE_FLOAT {if($1 < $3) $$=true; else $$=false;}
-		     | VALUE_FLOAT RELATION_EQUALS VALUE_FLOAT {if($1 == $3) $$=true; else $$=false;}
-		     | VALUE_FLOAT RELATION_NOTEQUAL VALUE_FLOAT {if($1 != $3) $$=true; else $$=false;}
-		     | VALUE_FLOAT RELATION_LESSEREQUAL VALUE_FLOAT {if($1 <= $3) $$=true; else $$=false;}
-		     | VALUE_FLOAT RELATION_GREATEREQUAL VALUE_FLOAT {if($1 <= $3) $$=true; else $$=false;}
-		     | VALUE_BOOL RELATION_EQUALS VALUE_BOOL {if($1 == $3) $$=true; else $$=false;}
-		     | VALUE_BOOL RELATION_NOTEQUAL VALUE_BOOL {if($1 != $3) $$=true; else $$=false;}
-		     | VALUE_CHAR RELATION_GREATER VALUE_CHAR {if($1 > $3) $$=true; else $$=false;}
-		     | VALUE_CHAR RELATION_LESSER VALUE_CHAR {if($1 < $3) $$=true; else $$=false;}
-		     | VALUE_CHAR RELATION_EQUALS VALUE_CHAR {if($1 == $3) $$=true; else $$=false;}
-		     | VALUE_CHAR RELATION_NOTEQUAL VALUE_CHAR {if($1 != $3) $$=true; else $$=false;}
-		     | VALUE_CHAR RELATION_LESSEREQUAL VALUE_CHAR {if($1 <= $3) $$=true; else $$=false;}
-		     | VALUE_CHAR RELATION_GREATEREQUAL VALUE_CHAR {if($1 <= $3) $$=true; else $$=false;}
-		     | IDENTIFIER RELATION_GREATER IDENTIFIER {if($1 > $3) $$=true; else $$=false;}
-		     | IDENTIFIER RELATION_LESSER IDENTIFIER {if($1 < $3) $$=true; else $$=false;}
-		     | IDENTIFIER RELATION_EQUALS IDENTIFIER {if($1 == $3) $$=true; else $$=false;}
-		     | IDENTIFIER RELATION_NOTEQUAL IDENTIFIER {if($1 != $3) $$=true; else $$=false;}
-		     | IDENTIFIER RELATION_LESSEREQUAL IDENTIFIER {if($1 <= $3) $$=true; else $$=false;}
-		     | IDENTIFIER RELATION_GREATEREQUAL IDENTIFIER {if($1 <= $3) $$=true; else $$=false;}
-		     | conditional_statment LOGIC_AND conditional_statment {if ($1 && $3) $$=true ; else $$=false;}
-		     | conditional_statment LOGIC_OR conditional_statment {if ($1 || $3) $$=true ; else $$=false;}
-		     |  LOGIC_NOT conditional_statment {if (!$2) $$=true ; else $$=false;}
-		     | ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET {$$= $2;}
-
- 
+		       exp
+		     | exp RELATION_GREATER exp {printf(" greater than statement \n");}
+		     | exp RELATION_LESSER exp {printf(" lesser than statement \n");}
+		     | exp RELATION_EQUALS exp  {printf(" equal statement \n");}
+		     | exp RELATION_NOTEQUAL exp  {printf(" not equal statement \n");}
+		     | exp RELATION_LESSEREQUAL exp  {printf(" less equal than statement \n");}
+		     | exp RELATION_GREATEREQUAL exp {printf(" greater equal than statement \n");}
+		     |  conditional_statment LOGIC_AND conditional_statment {printf(" AND statement \n");}
+		     |	 conditional_statment LOGIC_OR conditional_statment {printf(" OR statement \n");}
+		     |  LOGIC_NOT conditional_statment  {printf(" LOGICAL NOT statement \n");}
+		     //| ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET 
+			
+		;
 %%
+
+void yyerror(char *s) {
+    fprintf(stdout, "%s\n", s);
+}
+
+
+int main (void)
+{
+
+test = fopen("testfile.txt","r");
+if(!yyparse())
+
+{
+printf("\n Parsing complete \n");
+}
+else
+{
+printf("\n Parsing faild \n");
+}
+fclose(test);
+return 0;
+
+}
