@@ -8,7 +8,6 @@
 
 :						  	                  return COLON;
 ;						                          return SEMICOLON;
-,									  return COMMA;
 int						                        {printf("\n TYPE_INT \n")  ; return TYPE_INT;}
 float					  	                          return TYPE_FLOAT;
 char				   		                          return TYPE_CHAR;

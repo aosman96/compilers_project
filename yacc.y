@@ -62,6 +62,7 @@
 %token ARGUMENT_CLOSEBRACKET 
 
 %token SEMICOLON 
+%token COMMA
 
 %token VALUE_INT 
 %token VALUE_FLOAT 
@@ -102,12 +103,12 @@ code :  code line
  line   : exp SEMICOLON   {printf (" decleration \n");}
 	| IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON	{printf( "initilization \n");}
 	| SCOPE_BRACEOPEN code SCOPE_BRACECLOSE {printf("a scope decleration \n");}
-
 	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET Inside_loops_statments {printf(" a while loop with braces\n");}  // the while loop
 	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line {printf(" a while loop has one line \n");}  // the while loop
 	| KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET SEMICOLON {printf(" a while loop has no lines \n");}  // the while loop
 	
-	| KEYWORD_DO SCOPE_BRACEOPEN  Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET  {printf("Do while loop \n");}// the do while loop
+	| KEYWORD_DO   Inside_loops_statments  KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET  {printf("Do while loop \n");}// the do while loop
+	| KEYWORD_DO   line  KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET  {printf("Do while loop \n");}// the do while loop
 	
 	| KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment  KEYWORD_DEFAULT  COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE                      {printf("a switch case statement");} // swithc case statment 
 	
@@ -120,8 +121,13 @@ code :  code line
 	| KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line %prec IFX {printf( "if without else \n");}
 	|KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line {printf("if else statment \n");}
 	
+	|  datatype IDENTIFIER ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code SCOPE_BRACECLOSE
 	;
 
+
+argument_variables : datatype IDENTIFIER |
+		     datatype IDENTIFIER COMMA argument_variables 
+		     |
 
  exp    :                    
 	 exp OPERATOR_MULTIPLY exp                  {printf("multiplication statement \n");}
@@ -138,7 +144,7 @@ Inside_loops_statments :
 		 SCOPE_BRACEOPEN code Inside_loops_statments SCOPE_BRACECLOSE
 		 |KEYWORD_CONTINUE SEMICOLON
 		 |KEYWORD_BREAK SEMICOLON
-		
+		 
 		;
 
 

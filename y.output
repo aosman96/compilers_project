@@ -16,128 +16,137 @@ Grammar
     6     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET Inside_loops_statments
     7     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line
     8     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET SEMICOLON
-    9     | KEYWORD_DO SCOPE_BRACEOPEN Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
-   10     | KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
-   11     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
-   13     | datatype IDENTIFIER SEMICOLON
-   14     | datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON
-   15     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line
-   16     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
+    9     | KEYWORD_DO Inside_loops_statments KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+   10     | KEYWORD_DO line KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+   11     | KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+   14     | datatype IDENTIFIER SEMICOLON
+   15     | datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON
+   16     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line
+   17     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
+   18     | datatype IDENTIFIER ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code SCOPE_BRACECLOSE
 
-   17 exp: exp OPERATOR_MULTIPLY exp
-   18    | exp OPERATOR_DIVIDE exp
-   19    | exp OPERATOR_PLUS exp
-   20    | exp OPERATOR_MINUS exp
-   21    | ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET
-   22    | value
+   19 argument_variables: datatype IDENTIFIER
+   20                   | datatype IDENTIFIER COMMA argument_variables
+   21                   | /* empty */
 
-   23 Inside_loops_statments: SCOPE_BRACEOPEN code Inside_loops_statments SCOPE_BRACECLOSE
-   24                       | KEYWORD_CONTINUE SEMICOLON
-   25                       | KEYWORD_BREAK SEMICOLON
+   22 exp: exp OPERATOR_MULTIPLY exp
+   23    | exp OPERATOR_DIVIDE exp
+   24    | exp OPERATOR_PLUS exp
+   25    | exp OPERATOR_MINUS exp
+   26    | ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET
+   27    | value
 
-   26 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment
-   27              | /* empty */
+   28 Inside_loops_statments: SCOPE_BRACEOPEN code Inside_loops_statments SCOPE_BRACECLOSE
+   29                       | KEYWORD_CONTINUE SEMICOLON
+   30                       | KEYWORD_BREAK SEMICOLON
 
-   28 datatype: TYPE_INT
-   29         | TYPE_BOOL
-   30         | TYPE_CHAR
-   31         | TYPE_FLOAT
-   32         | TYPE_CONSTANT datatype
-   33         | TYPE_STRING
+   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment
+   32              | /* empty */
 
-   34 value: IDENTIFIER
-   35      | VALUE_INT
-   36      | VALUE_FLOAT
-   37      | VALUE_BOOL
-   38      | VALUE_CHAR
-   39      | OPERATOR_MINUS value
-   40      | OPERATOR_PLUS value
+   33 datatype: TYPE_INT
+   34         | TYPE_BOOL
+   35         | TYPE_CHAR
+   36         | TYPE_FLOAT
+   37         | TYPE_CONSTANT datatype
+   38         | TYPE_STRING
 
-   41 conditional_statment: exp
-   42                     | exp RELATION_GREATER exp
-   43                     | exp RELATION_LESSER exp
-   44                     | exp RELATION_EQUALS exp
-   45                     | exp RELATION_NOTEQUAL exp
-   46                     | exp RELATION_LESSEREQUAL exp
-   47                     | exp RELATION_GREATEREQUAL exp
-   48                     | conditional_statment LOGIC_AND conditional_statment
-   49                     | conditional_statment LOGIC_OR conditional_statment
-   50                     | LOGIC_NOT conditional_statment
+   39 value: IDENTIFIER
+   40      | VALUE_INT
+   41      | VALUE_FLOAT
+   42      | VALUE_BOOL
+   43      | VALUE_CHAR
+   44      | OPERATOR_MINUS value
+   45      | OPERATOR_PLUS value
+
+   46 conditional_statment: exp
+   47                     | exp RELATION_GREATER exp
+   48                     | exp RELATION_LESSER exp
+   49                     | exp RELATION_EQUALS exp
+   50                     | exp RELATION_NOTEQUAL exp
+   51                     | exp RELATION_LESSEREQUAL exp
+   52                     | exp RELATION_GREATEREQUAL exp
+   53                     | conditional_statment LOGIC_AND conditional_statment
+   54                     | conditional_statment LOGIC_OR conditional_statment
+   55                     | LOGIC_NOT conditional_statment
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-TYPE_INT (258) 28
-TYPE_BOOL (259) 29
-TYPE_CHAR (260) 30
-TYPE_FLOAT (261) 31
-TYPE_CONSTANT (262) 32
-TYPE_STRING (263) 33
-KEYWORD_IF (264) 15 16
-KEYWORD_ELSE (265) 16
-KEYWORD_WHILE (266) 6 7 8 9
-KEYWORD_DO (267) 9
-KEYWORD_SWITCH (268) 10
-KEYWORD_CASE (269) 26
-KEYWORD_DEFAULT (270) 10
-KEYWORD_BREAK (271) 10 25 26
-KEYWORD_CONTINUE (272) 24
-KEYWORD_FOR (273) 11 12
-IDENTIFIER (274) 4 10 11 12 13 14 34
-OPERATOR_PLUS (275) 19 40
-OPERATOR_MINUS (276) 20 39
-OPERATOR_MULTIPLY (277) 17
-OPERATOR_DIVIDE (278) 18
-OPERATOR_ASSIGNMENT (279) 4 11 12 14
-LOGIC_AND (280) 48
-LOGIC_OR (281) 49
-LOGIC_NOT (282) 50
-RELATION_EQUALS (283) 44
-RELATION_NOTEQUAL (284) 45
-RELATION_LESSER (285) 43
-RELATION_GREATER (286) 42
-RELATION_LESSEREQUAL (287) 46
-RELATION_GREATEREQUAL (288) 47
-SCOPE_BRACEOPEN (289) 5 9 10 23
-SCOPE_BRACECLOSE (290) 5 9 10 23
-ARGUMENT_OPENBRACKET (291) 6 7 8 9 10 11 12 15 16 21
-ARGUMENT_CLOSEBRACKET (292) 6 7 8 9 10 11 12 15 16 21
-SEMICOLON (293) 3 4 8 10 11 12 13 14 24 25 26
-VALUE_INT (294) 35
-VALUE_FLOAT (295) 36
-VALUE_BOOL (296) 37
-VALUE_CHAR (297) 38
-VALUE_STRING (298)
-COLON (299) 10 26
-IFX (300)
+TYPE_INT (258) 33
+TYPE_BOOL (259) 34
+TYPE_CHAR (260) 35
+TYPE_FLOAT (261) 36
+TYPE_CONSTANT (262) 37
+TYPE_STRING (263) 38
+KEYWORD_IF (264) 16 17
+KEYWORD_ELSE (265) 17
+KEYWORD_WHILE (266) 6 7 8 9 10
+KEYWORD_DO (267) 9 10
+KEYWORD_SWITCH (268) 11
+KEYWORD_CASE (269) 31
+KEYWORD_DEFAULT (270) 11
+KEYWORD_BREAK (271) 11 30 31
+KEYWORD_CONTINUE (272) 29
+KEYWORD_FOR (273) 12 13
+IDENTIFIER (274) 4 11 12 13 14 15 18 19 20 39
+OPERATOR_PLUS (275) 24 45
+OPERATOR_MINUS (276) 25 44
+OPERATOR_MULTIPLY (277) 22
+OPERATOR_DIVIDE (278) 23
+OPERATOR_ASSIGNMENT (279) 4 12 13 15
+LOGIC_AND (280) 53
+LOGIC_OR (281) 54
+LOGIC_NOT (282) 55
+RELATION_EQUALS (283) 49
+RELATION_NOTEQUAL (284) 50
+RELATION_LESSER (285) 48
+RELATION_GREATER (286) 47
+RELATION_LESSEREQUAL (287) 51
+RELATION_GREATEREQUAL (288) 52
+SCOPE_BRACEOPEN (289) 5 11 18 28
+SCOPE_BRACECLOSE (290) 5 11 18 28
+ARGUMENT_OPENBRACKET (291) 6 7 8 9 10 11 12 13 16 17 18 26
+ARGUMENT_CLOSEBRACKET (292) 6 7 8 9 10 11 12 13 16 17 18 26
+SEMICOLON (293) 3 4 8 11 12 13 14 15 29 30 31
+COMMA (294) 20
+VALUE_INT (295) 40
+VALUE_FLOAT (296) 41
+VALUE_BOOL (297) 42
+VALUE_CHAR (298) 43
+VALUE_STRING (299)
+COLON (300) 11 31
+IFX (301)
 
 
 Nonterminals, with rules where they appear
 
-$accept (46)
+$accept (47)
     on left: 0
-code (47)
-    on left: 1 2, on right: 0 1 5 23
-line (48)
-    on left: 3 4 5 6 7 8 9 10 11 12 13 14 15 16, on right: 1 7 10 12
-    15 16 26
-exp (49)
-    on left: 17 18 19 20 21 22, on right: 3 4 11 12 14 17 18 19 20
-    21 41 42 43 44 45 46 47
-Inside_loops_statments (50)
-    on left: 23 24 25, on right: 6 9 11 23
-case_statment (51)
-    on left: 26 27, on right: 10 26
-datatype (52)
-    on left: 28 29 30 31 32 33, on right: 11 12 13 14 32
-value (53)
-    on left: 34 35 36 37 38 39 40, on right: 22 26 39 40
-conditional_statment (54)
-    on left: 41 42 43 44 45 46 47 48 49 50, on right: 6 7 8 9 11 12
-    15 16 48 49 50
+code (48)
+    on left: 1 2, on right: 0 1 5 18 28
+line (49)
+    on left: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18, on right: 1
+    7 10 11 13 16 17 31
+argument_variables (50)
+    on left: 19 20 21, on right: 18 20
+exp (51)
+    on left: 22 23 24 25 26 27, on right: 3 4 12 13 15 22 23 24 25
+    26 46 47 48 49 50 51 52
+Inside_loops_statments (52)
+    on left: 28 29 30, on right: 6 9 12 28
+case_statment (53)
+    on left: 31 32, on right: 11 31
+datatype (54)
+    on left: 33 34 35 36 37 38, on right: 12 13 14 15 18 19 20 37
+value (55)
+    on left: 39 40 41 42 43 44 45, on right: 27 31 44 45
+conditional_statment (56)
+    on left: 46 47 48 49 50 51 52 53 54 55, on right: 6 7 8 9 10 12
+    13 16 17 53 54 55
 
 
 State 0
@@ -191,35 +200,35 @@ State 2
 
 State 3
 
-   28 datatype: TYPE_INT .
+   33 datatype: TYPE_INT .
 
-    $default  reduce using rule 28 (datatype)
+    $default  reduce using rule 33 (datatype)
 
 
 State 4
 
-   29 datatype: TYPE_BOOL .
+   34 datatype: TYPE_BOOL .
 
-    $default  reduce using rule 29 (datatype)
+    $default  reduce using rule 34 (datatype)
 
 
 State 5
 
-   30 datatype: TYPE_CHAR .
+   35 datatype: TYPE_CHAR .
 
-    $default  reduce using rule 30 (datatype)
+    $default  reduce using rule 35 (datatype)
 
 
 State 6
 
-   31 datatype: TYPE_FLOAT .
+   36 datatype: TYPE_FLOAT .
 
-    $default  reduce using rule 31 (datatype)
+    $default  reduce using rule 36 (datatype)
 
 
 State 7
 
-   32 datatype: TYPE_CONSTANT . datatype
+   37 datatype: TYPE_CONSTANT . datatype
 
     TYPE_INT       shift, and go to state 3
     TYPE_BOOL      shift, and go to state 4
@@ -233,15 +242,15 @@ State 7
 
 State 8
 
-   33 datatype: TYPE_STRING .
+   38 datatype: TYPE_STRING .
 
-    $default  reduce using rule 33 (datatype)
+    $default  reduce using rule 38 (datatype)
 
 
 State 9
 
-   15 line: KEYWORD_IF . ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line
-   16     | KEYWORD_IF . ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
+   16 line: KEYWORD_IF . ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line
+   17     | KEYWORD_IF . ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
 
     ARGUMENT_OPENBRACKET  shift, and go to state 28
 
@@ -257,41 +266,69 @@ State 10
 
 State 11
 
-    9 line: KEYWORD_DO . SCOPE_BRACEOPEN Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+    9 line: KEYWORD_DO . Inside_loops_statments KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+   10     | KEYWORD_DO . line KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
 
-    SCOPE_BRACEOPEN  shift, and go to state 30
+    TYPE_INT              shift, and go to state 3
+    TYPE_BOOL             shift, and go to state 4
+    TYPE_CHAR             shift, and go to state 5
+    TYPE_FLOAT            shift, and go to state 6
+    TYPE_CONSTANT         shift, and go to state 7
+    TYPE_STRING           shift, and go to state 8
+    KEYWORD_IF            shift, and go to state 9
+    KEYWORD_WHILE         shift, and go to state 10
+    KEYWORD_DO            shift, and go to state 11
+    KEYWORD_SWITCH        shift, and go to state 12
+    KEYWORD_BREAK         shift, and go to state 30
+    KEYWORD_CONTINUE      shift, and go to state 31
+    KEYWORD_FOR           shift, and go to state 13
+    IDENTIFIER            shift, and go to state 14
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    SCOPE_BRACEOPEN       shift, and go to state 32
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    line                    go to state 33
+    exp                     go to state 24
+    Inside_loops_statments  go to state 34
+    datatype                go to state 25
+    value                   go to state 26
 
 
 State 12
 
-   10 line: KEYWORD_SWITCH . ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH . ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
-    ARGUMENT_OPENBRACKET  shift, and go to state 31
+    ARGUMENT_OPENBRACKET  shift, and go to state 35
 
 
 State 13
 
-   11 line: KEYWORD_FOR . ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR . ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+   12 line: KEYWORD_FOR . ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR . ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
 
-    ARGUMENT_OPENBRACKET  shift, and go to state 32
+    ARGUMENT_OPENBRACKET  shift, and go to state 36
 
 
 State 14
 
     4 line: IDENTIFIER . OPERATOR_ASSIGNMENT exp SEMICOLON
-   34 value: IDENTIFIER .
+   39 value: IDENTIFIER .
 
-    OPERATOR_ASSIGNMENT  shift, and go to state 33
+    OPERATOR_ASSIGNMENT  shift, and go to state 37
 
-    $default  reduce using rule 34 (value)
+    $default  reduce using rule 39 (value)
 
 
 State 15
 
-   40 value: OPERATOR_PLUS . value
+   45 value: OPERATOR_PLUS . value
 
-    IDENTIFIER      shift, and go to state 34
+    IDENTIFIER      shift, and go to state 38
     OPERATOR_PLUS   shift, and go to state 15
     OPERATOR_MINUS  shift, and go to state 16
     VALUE_INT       shift, and go to state 19
@@ -299,14 +336,14 @@ State 15
     VALUE_BOOL      shift, and go to state 21
     VALUE_CHAR      shift, and go to state 22
 
-    value  go to state 35
+    value  go to state 39
 
 
 State 16
 
-   39 value: OPERATOR_MINUS . value
+   44 value: OPERATOR_MINUS . value
 
-    IDENTIFIER      shift, and go to state 34
+    IDENTIFIER      shift, and go to state 38
     OPERATOR_PLUS   shift, and go to state 15
     OPERATOR_MINUS  shift, and go to state 16
     VALUE_INT       shift, and go to state 19
@@ -314,7 +351,7 @@ State 16
     VALUE_BOOL      shift, and go to state 21
     VALUE_CHAR      shift, and go to state 22
 
-    value  go to state 36
+    value  go to state 40
 
 
 State 17
@@ -323,14 +360,14 @@ State 17
 
     $default  reduce using rule 2 (code)
 
-    code  go to state 37
+    code  go to state 41
 
 
 State 18
 
-   21 exp: ARGUMENT_OPENBRACKET . exp ARGUMENT_CLOSEBRACKET
+   26 exp: ARGUMENT_OPENBRACKET . exp ARGUMENT_CLOSEBRACKET
 
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
     ARGUMENT_OPENBRACKET  shift, and go to state 18
@@ -339,36 +376,36 @@ State 18
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp    go to state 38
+    exp    go to state 42
     value  go to state 26
 
 
 State 19
 
-   35 value: VALUE_INT .
+   40 value: VALUE_INT .
 
-    $default  reduce using rule 35 (value)
+    $default  reduce using rule 40 (value)
 
 
 State 20
 
-   36 value: VALUE_FLOAT .
+   41 value: VALUE_FLOAT .
 
-    $default  reduce using rule 36 (value)
+    $default  reduce using rule 41 (value)
 
 
 State 21
 
-   37 value: VALUE_BOOL .
+   42 value: VALUE_BOOL .
 
-    $default  reduce using rule 37 (value)
+    $default  reduce using rule 42 (value)
 
 
 State 22
 
-   38 value: VALUE_CHAR .
+   43 value: VALUE_CHAR .
 
-    $default  reduce using rule 38 (value)
+    $default  reduce using rule 43 (value)
 
 
 State 23
@@ -381,58 +418,59 @@ State 23
 State 24
 
     3 line: exp . SEMICOLON
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
 
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-    SEMICOLON          shift, and go to state 43
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+    SEMICOLON          shift, and go to state 47
 
 
 State 25
 
-   13 line: datatype . IDENTIFIER SEMICOLON
-   14     | datatype . IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON
+   14 line: datatype . IDENTIFIER SEMICOLON
+   15     | datatype . IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON
+   18     | datatype . IDENTIFIER ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code SCOPE_BRACECLOSE
 
-    IDENTIFIER  shift, and go to state 44
+    IDENTIFIER  shift, and go to state 48
 
 
 State 26
 
-   22 exp: value .
+   27 exp: value .
 
-    $default  reduce using rule 22 (exp)
+    $default  reduce using rule 27 (exp)
 
 
 State 27
 
-   32 datatype: TYPE_CONSTANT datatype .
+   37 datatype: TYPE_CONSTANT datatype .
 
-    $default  reduce using rule 32 (datatype)
+    $default  reduce using rule 37 (datatype)
 
 
 State 28
 
-   15 line: KEYWORD_IF ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET line
-   16     | KEYWORD_IF ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
+   16 line: KEYWORD_IF ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET line
+   17     | KEYWORD_IF ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
 
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
-    LOGIC_NOT             shift, and go to state 45
+    LOGIC_NOT             shift, and go to state 49
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp                   go to state 46
+    exp                   go to state 50
     value                 go to state 26
-    conditional_statment  go to state 47
+    conditional_statment  go to state 51
 
 
 State 29
@@ -441,43 +479,70 @@ State 29
     7     | KEYWORD_WHILE ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET line
     8     | KEYWORD_WHILE ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET SEMICOLON
 
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
-    LOGIC_NOT             shift, and go to state 45
+    LOGIC_NOT             shift, and go to state 49
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp                   go to state 46
+    exp                   go to state 50
     value                 go to state 26
-    conditional_statment  go to state 48
+    conditional_statment  go to state 52
 
 
 State 30
 
-    9 line: KEYWORD_DO SCOPE_BRACEOPEN . Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+   30 Inside_loops_statments: KEYWORD_BREAK . SEMICOLON
 
-    KEYWORD_BREAK     shift, and go to state 49
-    KEYWORD_CONTINUE  shift, and go to state 50
-    SCOPE_BRACEOPEN   shift, and go to state 51
-
-    Inside_loops_statments  go to state 52
+    SEMICOLON  shift, and go to state 53
 
 
 State 31
 
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET . IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   29 Inside_loops_statments: KEYWORD_CONTINUE . SEMICOLON
 
-    IDENTIFIER  shift, and go to state 53
+    SEMICOLON  shift, and go to state 54
 
 
 State 32
 
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET . datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET . datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+    5 line: SCOPE_BRACEOPEN . code SCOPE_BRACECLOSE
+   28 Inside_loops_statments: SCOPE_BRACEOPEN . code Inside_loops_statments SCOPE_BRACECLOSE
+
+    $default  reduce using rule 2 (code)
+
+    code  go to state 55
+
+
+State 33
+
+   10 line: KEYWORD_DO line . KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+
+    KEYWORD_WHILE  shift, and go to state 56
+
+
+State 34
+
+    9 line: KEYWORD_DO Inside_loops_statments . KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+
+    KEYWORD_WHILE  shift, and go to state 57
+
+
+State 35
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET . IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+
+    IDENTIFIER  shift, and go to state 58
+
+
+State 36
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET . datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET . datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
 
     TYPE_INT       shift, and go to state 3
     TYPE_BOOL      shift, and go to state 4
@@ -486,14 +551,14 @@ State 32
     TYPE_CONSTANT  shift, and go to state 7
     TYPE_STRING    shift, and go to state 8
 
-    datatype  go to state 54
+    datatype  go to state 59
 
 
-State 33
+State 37
 
     4 line: IDENTIFIER OPERATOR_ASSIGNMENT . exp SEMICOLON
 
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
     ARGUMENT_OPENBRACKET  shift, and go to state 18
@@ -502,32 +567,32 @@ State 33
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp    go to state 55
+    exp    go to state 60
     value  go to state 26
 
 
-State 34
+State 38
 
-   34 value: IDENTIFIER .
-
-    $default  reduce using rule 34 (value)
-
-
-State 35
-
-   40 value: OPERATOR_PLUS value .
-
-    $default  reduce using rule 40 (value)
-
-
-State 36
-
-   39 value: OPERATOR_MINUS value .
+   39 value: IDENTIFIER .
 
     $default  reduce using rule 39 (value)
 
 
-State 37
+State 39
+
+   45 value: OPERATOR_PLUS value .
+
+    $default  reduce using rule 45 (value)
+
+
+State 40
+
+   44 value: OPERATOR_MINUS value .
+
+    $default  reduce using rule 44 (value)
+
+
+State 41
 
     1 code: code . line
     5 line: SCOPE_BRACEOPEN code . SCOPE_BRACECLOSE
@@ -547,7 +612,7 @@ State 37
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
     SCOPE_BRACEOPEN       shift, and go to state 17
-    SCOPE_BRACECLOSE      shift, and go to state 56
+    SCOPE_BRACECLOSE      shift, and go to state 61
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
@@ -560,410 +625,343 @@ State 37
     value     go to state 26
 
 
-State 38
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   21    | ARGUMENT_OPENBRACKET exp . ARGUMENT_CLOSEBRACKET
-
-    OPERATOR_PLUS          shift, and go to state 39
-    OPERATOR_MINUS         shift, and go to state 40
-    OPERATOR_MULTIPLY      shift, and go to state 41
-    OPERATOR_DIVIDE        shift, and go to state 42
-    ARGUMENT_CLOSEBRACKET  shift, and go to state 57
-
-
-State 39
-
-   19 exp: exp OPERATOR_PLUS . exp
-
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 58
-    value  go to state 26
-
-
-State 40
-
-   20 exp: exp OPERATOR_MINUS . exp
-
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 59
-    value  go to state 26
-
-
-State 41
-
-   17 exp: exp OPERATOR_MULTIPLY . exp
-
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 60
-    value  go to state 26
-
-
 State 42
 
-   18 exp: exp OPERATOR_DIVIDE . exp
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   26    | ARGUMENT_OPENBRACKET exp . ARGUMENT_CLOSEBRACKET
 
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 61
-    value  go to state 26
+    OPERATOR_PLUS          shift, and go to state 43
+    OPERATOR_MINUS         shift, and go to state 44
+    OPERATOR_MULTIPLY      shift, and go to state 45
+    OPERATOR_DIVIDE        shift, and go to state 46
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 62
 
 
 State 43
+
+   24 exp: exp OPERATOR_PLUS . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 63
+    value  go to state 26
+
+
+State 44
+
+   25 exp: exp OPERATOR_MINUS . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 64
+    value  go to state 26
+
+
+State 45
+
+   22 exp: exp OPERATOR_MULTIPLY . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 65
+    value  go to state 26
+
+
+State 46
+
+   23 exp: exp OPERATOR_DIVIDE . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 66
+    value  go to state 26
+
+
+State 47
 
     3 line: exp SEMICOLON .
 
     $default  reduce using rule 3 (line)
 
 
-State 44
+State 48
 
-   13 line: datatype IDENTIFIER . SEMICOLON
-   14     | datatype IDENTIFIER . OPERATOR_ASSIGNMENT exp SEMICOLON
+   14 line: datatype IDENTIFIER . SEMICOLON
+   15     | datatype IDENTIFIER . OPERATOR_ASSIGNMENT exp SEMICOLON
+   18     | datatype IDENTIFIER . ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code SCOPE_BRACECLOSE
 
-    OPERATOR_ASSIGNMENT  shift, and go to state 62
-    SEMICOLON            shift, and go to state 63
+    OPERATOR_ASSIGNMENT   shift, and go to state 67
+    ARGUMENT_OPENBRACKET  shift, and go to state 68
+    SEMICOLON             shift, and go to state 69
 
 
-State 45
+State 49
 
-   50 conditional_statment: LOGIC_NOT . conditional_statment
+   55 conditional_statment: LOGIC_NOT . conditional_statment
 
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
-    LOGIC_NOT             shift, and go to state 45
+    LOGIC_NOT             shift, and go to state 49
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp                   go to state 46
+    exp                   go to state 50
     value                 go to state 26
-    conditional_statment  go to state 64
-
-
-State 46
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   41 conditional_statment: exp .
-   42                     | exp . RELATION_GREATER exp
-   43                     | exp . RELATION_LESSER exp
-   44                     | exp . RELATION_EQUALS exp
-   45                     | exp . RELATION_NOTEQUAL exp
-   46                     | exp . RELATION_LESSEREQUAL exp
-   47                     | exp . RELATION_GREATEREQUAL exp
-
-    OPERATOR_PLUS          shift, and go to state 39
-    OPERATOR_MINUS         shift, and go to state 40
-    OPERATOR_MULTIPLY      shift, and go to state 41
-    OPERATOR_DIVIDE        shift, and go to state 42
-    RELATION_EQUALS        shift, and go to state 65
-    RELATION_NOTEQUAL      shift, and go to state 66
-    RELATION_LESSER        shift, and go to state 67
-    RELATION_GREATER       shift, and go to state 68
-    RELATION_LESSEREQUAL   shift, and go to state 69
-    RELATION_GREATEREQUAL  shift, and go to state 70
-
-    $default  reduce using rule 41 (conditional_statment)
-
-
-State 47
-
-   15 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET line
-   16     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
-   48 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
-   49                     | conditional_statment . LOGIC_OR conditional_statment
-
-    LOGIC_AND              shift, and go to state 71
-    LOGIC_OR               shift, and go to state 72
-    ARGUMENT_CLOSEBRACKET  shift, and go to state 73
-
-
-State 48
-
-    6 line: KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET Inside_loops_statments
-    7     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET line
-    8     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET SEMICOLON
-   48 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
-   49                     | conditional_statment . LOGIC_OR conditional_statment
-
-    LOGIC_AND              shift, and go to state 71
-    LOGIC_OR               shift, and go to state 72
-    ARGUMENT_CLOSEBRACKET  shift, and go to state 74
-
-
-State 49
-
-   25 Inside_loops_statments: KEYWORD_BREAK . SEMICOLON
-
-    SEMICOLON  shift, and go to state 75
+    conditional_statment  go to state 70
 
 
 State 50
 
-   24 Inside_loops_statments: KEYWORD_CONTINUE . SEMICOLON
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   46 conditional_statment: exp .
+   47                     | exp . RELATION_GREATER exp
+   48                     | exp . RELATION_LESSER exp
+   49                     | exp . RELATION_EQUALS exp
+   50                     | exp . RELATION_NOTEQUAL exp
+   51                     | exp . RELATION_LESSEREQUAL exp
+   52                     | exp . RELATION_GREATEREQUAL exp
 
-    SEMICOLON  shift, and go to state 76
+    OPERATOR_PLUS          shift, and go to state 43
+    OPERATOR_MINUS         shift, and go to state 44
+    OPERATOR_MULTIPLY      shift, and go to state 45
+    OPERATOR_DIVIDE        shift, and go to state 46
+    RELATION_EQUALS        shift, and go to state 71
+    RELATION_NOTEQUAL      shift, and go to state 72
+    RELATION_LESSER        shift, and go to state 73
+    RELATION_GREATER       shift, and go to state 74
+    RELATION_LESSEREQUAL   shift, and go to state 75
+    RELATION_GREATEREQUAL  shift, and go to state 76
+
+    $default  reduce using rule 46 (conditional_statment)
 
 
 State 51
 
-   23 Inside_loops_statments: SCOPE_BRACEOPEN . code Inside_loops_statments SCOPE_BRACECLOSE
+   16 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET line
+   17     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   54                     | conditional_statment . LOGIC_OR conditional_statment
 
-    $default  reduce using rule 2 (code)
-
-    code  go to state 77
+    LOGIC_AND              shift, and go to state 77
+    LOGIC_OR               shift, and go to state 78
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 79
 
 
 State 52
 
-    9 line: KEYWORD_DO SCOPE_BRACEOPEN Inside_loops_statments . SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+    6 line: KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET Inside_loops_statments
+    7     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET line
+    8     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET SEMICOLON
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   54                     | conditional_statment . LOGIC_OR conditional_statment
 
-    SCOPE_BRACECLOSE  shift, and go to state 78
+    LOGIC_AND              shift, and go to state 77
+    LOGIC_OR               shift, and go to state 78
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 80
 
 
 State 53
 
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER . ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   30 Inside_loops_statments: KEYWORD_BREAK SEMICOLON .
 
-    ARGUMENT_CLOSEBRACKET  shift, and go to state 79
+    $default  reduce using rule 30 (Inside_loops_statments)
 
 
 State 54
 
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype . IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype . IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+   29 Inside_loops_statments: KEYWORD_CONTINUE SEMICOLON .
 
-    IDENTIFIER  shift, and go to state 80
+    $default  reduce using rule 29 (Inside_loops_statments)
 
 
 State 55
 
-    4 line: IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
+    1 code: code . line
+    5 line: SCOPE_BRACEOPEN code . SCOPE_BRACECLOSE
+   28 Inside_loops_statments: SCOPE_BRACEOPEN code . Inside_loops_statments SCOPE_BRACECLOSE
 
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-    SEMICOLON          shift, and go to state 81
+    TYPE_INT              shift, and go to state 3
+    TYPE_BOOL             shift, and go to state 4
+    TYPE_CHAR             shift, and go to state 5
+    TYPE_FLOAT            shift, and go to state 6
+    TYPE_CONSTANT         shift, and go to state 7
+    TYPE_STRING           shift, and go to state 8
+    KEYWORD_IF            shift, and go to state 9
+    KEYWORD_WHILE         shift, and go to state 10
+    KEYWORD_DO            shift, and go to state 11
+    KEYWORD_SWITCH        shift, and go to state 12
+    KEYWORD_BREAK         shift, and go to state 30
+    KEYWORD_CONTINUE      shift, and go to state 31
+    KEYWORD_FOR           shift, and go to state 13
+    IDENTIFIER            shift, and go to state 14
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    SCOPE_BRACEOPEN       shift, and go to state 32
+    SCOPE_BRACECLOSE      shift, and go to state 61
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    line                    go to state 23
+    exp                     go to state 24
+    Inside_loops_statments  go to state 81
+    datatype                go to state 25
+    value                   go to state 26
 
 
 State 56
+
+   10 line: KEYWORD_DO line KEYWORD_WHILE . ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+
+    ARGUMENT_OPENBRACKET  shift, and go to state 82
+
+
+State 57
+
+    9 line: KEYWORD_DO Inside_loops_statments KEYWORD_WHILE . ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
+
+    ARGUMENT_OPENBRACKET  shift, and go to state 83
+
+
+State 58
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER . ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 84
+
+
+State 59
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype . IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype . IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+
+    IDENTIFIER  shift, and go to state 85
+
+
+State 60
+
+    4 line: IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+    SEMICOLON          shift, and go to state 86
+
+
+State 61
 
     5 line: SCOPE_BRACEOPEN code SCOPE_BRACECLOSE .
 
     $default  reduce using rule 5 (line)
 
 
-State 57
-
-   21 exp: ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET .
-
-    $default  reduce using rule 21 (exp)
-
-
-State 58
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   19    | exp OPERATOR_PLUS exp .
-   20    | exp . OPERATOR_MINUS exp
-
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 19 (exp)
-
-
-State 59
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   20    | exp OPERATOR_MINUS exp .
-
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 20 (exp)
-
-
-State 60
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   17    | exp OPERATOR_MULTIPLY exp .
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-
-    $default  reduce using rule 17 (exp)
-
-
-State 61
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   18    | exp OPERATOR_DIVIDE exp .
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-
-    $default  reduce using rule 18 (exp)
-
-
 State 62
 
-   14 line: datatype IDENTIFIER OPERATOR_ASSIGNMENT . exp SEMICOLON
+   26 exp: ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET .
 
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 82
-    value  go to state 26
+    $default  reduce using rule 26 (exp)
 
 
 State 63
 
-   13 line: datatype IDENTIFIER SEMICOLON .
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   24    | exp OPERATOR_PLUS exp .
+   25    | exp . OPERATOR_MINUS exp
 
-    $default  reduce using rule 13 (line)
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+
+    $default  reduce using rule 24 (exp)
 
 
 State 64
 
-   48 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
-   49                     | conditional_statment . LOGIC_OR conditional_statment
-   50                     | LOGIC_NOT conditional_statment .
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   25    | exp OPERATOR_MINUS exp .
 
-    LOGIC_AND  shift, and go to state 71
-    LOGIC_OR   shift, and go to state 72
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
 
-    $default  reduce using rule 50 (conditional_statment)
+    $default  reduce using rule 25 (exp)
 
 
 State 65
 
-   44 conditional_statment: exp RELATION_EQUALS . exp
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   22    | exp OPERATOR_MULTIPLY exp .
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
 
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 83
-    value  go to state 26
+    $default  reduce using rule 22 (exp)
 
 
 State 66
 
-   45 conditional_statment: exp RELATION_NOTEQUAL . exp
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   23    | exp OPERATOR_DIVIDE exp .
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
 
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 84
-    value  go to state 26
+    $default  reduce using rule 23 (exp)
 
 
 State 67
 
-   43 conditional_statment: exp RELATION_LESSER . exp
+   15 line: datatype IDENTIFIER OPERATOR_ASSIGNMENT . exp SEMICOLON
 
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 85
-    value  go to state 26
-
-
-State 68
-
-   42 conditional_statment: exp RELATION_GREATER . exp
-
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 86
-    value  go to state 26
-
-
-State 69
-
-   46 conditional_statment: exp RELATION_LESSEREQUAL . exp
-
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
     ARGUMENT_OPENBRACKET  shift, and go to state 18
@@ -976,65 +974,186 @@ State 69
     value  go to state 26
 
 
+State 68
+
+   18 line: datatype IDENTIFIER ARGUMENT_OPENBRACKET . argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code SCOPE_BRACECLOSE
+
+    TYPE_INT       shift, and go to state 3
+    TYPE_BOOL      shift, and go to state 4
+    TYPE_CHAR      shift, and go to state 5
+    TYPE_FLOAT     shift, and go to state 6
+    TYPE_CONSTANT  shift, and go to state 7
+    TYPE_STRING    shift, and go to state 8
+
+    $default  reduce using rule 21 (argument_variables)
+
+    argument_variables  go to state 88
+    datatype            go to state 89
+
+
+State 69
+
+   14 line: datatype IDENTIFIER SEMICOLON .
+
+    $default  reduce using rule 14 (line)
+
+
 State 70
 
-   47 conditional_statment: exp RELATION_GREATEREQUAL . exp
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   54                     | conditional_statment . LOGIC_OR conditional_statment
+   55                     | LOGIC_NOT conditional_statment .
 
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
+    LOGIC_AND  shift, and go to state 77
+    LOGIC_OR   shift, and go to state 78
 
-    exp    go to state 88
-    value  go to state 26
+    $default  reduce using rule 55 (conditional_statment)
 
 
 State 71
 
-   48 conditional_statment: conditional_statment LOGIC_AND . conditional_statment
+   49 conditional_statment: exp RELATION_EQUALS . exp
 
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
-    LOGIC_NOT             shift, and go to state 45
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp                   go to state 46
-    value                 go to state 26
-    conditional_statment  go to state 89
+    exp    go to state 90
+    value  go to state 26
 
 
 State 72
 
-   49 conditional_statment: conditional_statment LOGIC_OR . conditional_statment
+   50 conditional_statment: exp RELATION_NOTEQUAL . exp
 
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
-    LOGIC_NOT             shift, and go to state 45
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp                   go to state 46
-    value                 go to state 26
-    conditional_statment  go to state 90
+    exp    go to state 91
+    value  go to state 26
 
 
 State 73
 
-   15 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET . line
-   16     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET . line KEYWORD_ELSE line
+   48 conditional_statment: exp RELATION_LESSER . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 92
+    value  go to state 26
+
+
+State 74
+
+   47 conditional_statment: exp RELATION_GREATER . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 93
+    value  go to state 26
+
+
+State 75
+
+   51 conditional_statment: exp RELATION_LESSEREQUAL . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 94
+    value  go to state 26
+
+
+State 76
+
+   52 conditional_statment: exp RELATION_GREATEREQUAL . exp
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 95
+    value  go to state 26
+
+
+State 77
+
+   53 conditional_statment: conditional_statment LOGIC_AND . conditional_statment
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    LOGIC_NOT             shift, and go to state 49
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp                   go to state 50
+    value                 go to state 26
+    conditional_statment  go to state 96
+
+
+State 78
+
+   54 conditional_statment: conditional_statment LOGIC_OR . conditional_statment
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    LOGIC_NOT             shift, and go to state 49
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp                   go to state 50
+    value                 go to state 26
+    conditional_statment  go to state 97
+
+
+State 79
+
+   16 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET . line
+   17     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET . line KEYWORD_ELSE line
 
     TYPE_INT              shift, and go to state 3
     TYPE_BOOL             shift, and go to state 4
@@ -1057,13 +1176,13 @@ State 73
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    line      go to state 91
+    line      go to state 98
     exp       go to state 24
     datatype  go to state 25
     value     go to state 26
 
 
-State 74
+State 80
 
     6 line: KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET . Inside_loops_statments
     7     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET . line
@@ -1079,550 +1198,354 @@ State 74
     KEYWORD_WHILE         shift, and go to state 10
     KEYWORD_DO            shift, and go to state 11
     KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_BREAK         shift, and go to state 49
-    KEYWORD_CONTINUE      shift, and go to state 50
+    KEYWORD_BREAK         shift, and go to state 30
+    KEYWORD_CONTINUE      shift, and go to state 31
     KEYWORD_FOR           shift, and go to state 13
     IDENTIFIER            shift, and go to state 14
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 92
+    SCOPE_BRACEOPEN       shift, and go to state 32
     ARGUMENT_OPENBRACKET  shift, and go to state 18
-    SEMICOLON             shift, and go to state 93
+    SEMICOLON             shift, and go to state 99
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    line                    go to state 94
+    line                    go to state 100
     exp                     go to state 24
-    Inside_loops_statments  go to state 95
+    Inside_loops_statments  go to state 101
     datatype                go to state 25
     value                   go to state 26
-
-
-State 75
-
-   25 Inside_loops_statments: KEYWORD_BREAK SEMICOLON .
-
-    $default  reduce using rule 25 (Inside_loops_statments)
-
-
-State 76
-
-   24 Inside_loops_statments: KEYWORD_CONTINUE SEMICOLON .
-
-    $default  reduce using rule 24 (Inside_loops_statments)
-
-
-State 77
-
-    1 code: code . line
-   23 Inside_loops_statments: SCOPE_BRACEOPEN code . Inside_loops_statments SCOPE_BRACECLOSE
-
-    TYPE_INT              shift, and go to state 3
-    TYPE_BOOL             shift, and go to state 4
-    TYPE_CHAR             shift, and go to state 5
-    TYPE_FLOAT            shift, and go to state 6
-    TYPE_CONSTANT         shift, and go to state 7
-    TYPE_STRING           shift, and go to state 8
-    KEYWORD_IF            shift, and go to state 9
-    KEYWORD_WHILE         shift, and go to state 10
-    KEYWORD_DO            shift, and go to state 11
-    KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_BREAK         shift, and go to state 49
-    KEYWORD_CONTINUE      shift, and go to state 50
-    KEYWORD_FOR           shift, and go to state 13
-    IDENTIFIER            shift, and go to state 14
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 92
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    line                    go to state 23
-    exp                     go to state 24
-    Inside_loops_statments  go to state 96
-    datatype                go to state 25
-    value                   go to state 26
-
-
-State 78
-
-    9 line: KEYWORD_DO SCOPE_BRACEOPEN Inside_loops_statments SCOPE_BRACECLOSE . KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
-
-    KEYWORD_WHILE  shift, and go to state 97
-
-
-State 79
-
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET . SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
-
-    SCOPE_BRACEOPEN  shift, and go to state 98
-
-
-State 80
-
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER . OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER . OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
-
-    OPERATOR_ASSIGNMENT  shift, and go to state 99
 
 
 State 81
+
+   28 Inside_loops_statments: SCOPE_BRACEOPEN code Inside_loops_statments . SCOPE_BRACECLOSE
+
+    SCOPE_BRACECLOSE  shift, and go to state 102
+
+
+State 82
+
+   10 line: KEYWORD_DO line KEYWORD_WHILE ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    LOGIC_NOT             shift, and go to state 49
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp                   go to state 50
+    value                 go to state 26
+    conditional_statment  go to state 103
+
+
+State 83
+
+    9 line: KEYWORD_DO Inside_loops_statments KEYWORD_WHILE ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    LOGIC_NOT             shift, and go to state 49
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp                   go to state 50
+    value                 go to state 26
+    conditional_statment  go to state 104
+
+
+State 84
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET . SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+
+    SCOPE_BRACEOPEN  shift, and go to state 105
+
+
+State 85
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER . OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER . OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+
+    OPERATOR_ASSIGNMENT  shift, and go to state 106
+
+
+State 86
 
     4 line: IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON .
 
     $default  reduce using rule 4 (line)
 
 
-State 82
-
-   14 line: datatype IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-    SEMICOLON          shift, and go to state 100
-
-
-State 83
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   44 conditional_statment: exp RELATION_EQUALS exp .
-
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 44 (conditional_statment)
-
-
-State 84
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   45 conditional_statment: exp RELATION_NOTEQUAL exp .
-
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 45 (conditional_statment)
-
-
-State 85
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   43 conditional_statment: exp RELATION_LESSER exp .
-
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 43 (conditional_statment)
-
-
-State 86
-
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   42 conditional_statment: exp RELATION_GREATER exp .
-
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 42 (conditional_statment)
-
-
 State 87
 
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   46 conditional_statment: exp RELATION_LESSEREQUAL exp .
+   15 line: datatype IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
 
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 46 (conditional_statment)
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+    SEMICOLON          shift, and go to state 107
 
 
 State 88
 
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-   47 conditional_statment: exp RELATION_GREATEREQUAL exp .
+   18 line: datatype IDENTIFIER ARGUMENT_OPENBRACKET argument_variables . ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code SCOPE_BRACECLOSE
 
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-
-    $default  reduce using rule 47 (conditional_statment)
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 108
 
 
 State 89
 
-   48 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
-   48                     | conditional_statment LOGIC_AND conditional_statment .
-   49                     | conditional_statment . LOGIC_OR conditional_statment
+   19 argument_variables: datatype . IDENTIFIER
+   20                   | datatype . IDENTIFIER COMMA argument_variables
 
-    $default  reduce using rule 48 (conditional_statment)
+    IDENTIFIER  shift, and go to state 109
 
 
 State 90
 
-   48 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
-   49                     | conditional_statment . LOGIC_OR conditional_statment
-   49                     | conditional_statment LOGIC_OR conditional_statment .
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   49 conditional_statment: exp RELATION_EQUALS exp .
+
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
 
     $default  reduce using rule 49 (conditional_statment)
 
 
 State 91
 
-   15 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line .
-   16     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line . KEYWORD_ELSE line
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   50 conditional_statment: exp RELATION_NOTEQUAL exp .
 
-    KEYWORD_ELSE  shift, and go to state 101
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
 
-    $default  reduce using rule 15 (line)
+    $default  reduce using rule 50 (conditional_statment)
 
 
 State 92
 
-    5 line: SCOPE_BRACEOPEN . code SCOPE_BRACECLOSE
-   23 Inside_loops_statments: SCOPE_BRACEOPEN . code Inside_loops_statments SCOPE_BRACECLOSE
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   48 conditional_statment: exp RELATION_LESSER exp .
 
-    $default  reduce using rule 2 (code)
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
 
-    code  go to state 102
+    $default  reduce using rule 48 (conditional_statment)
 
 
 State 93
+
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   47 conditional_statment: exp RELATION_GREATER exp .
+
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+
+    $default  reduce using rule 47 (conditional_statment)
+
+
+State 94
+
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   51 conditional_statment: exp RELATION_LESSEREQUAL exp .
+
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+
+    $default  reduce using rule 51 (conditional_statment)
+
+
+State 95
+
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+   52 conditional_statment: exp RELATION_GREATEREQUAL exp .
+
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+
+    $default  reduce using rule 52 (conditional_statment)
+
+
+State 96
+
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   53                     | conditional_statment LOGIC_AND conditional_statment .
+   54                     | conditional_statment . LOGIC_OR conditional_statment
+
+    $default  reduce using rule 53 (conditional_statment)
+
+
+State 97
+
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   54                     | conditional_statment . LOGIC_OR conditional_statment
+   54                     | conditional_statment LOGIC_OR conditional_statment .
+
+    $default  reduce using rule 54 (conditional_statment)
+
+
+State 98
+
+   16 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line .
+   17     | KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line . KEYWORD_ELSE line
+
+    KEYWORD_ELSE  shift, and go to state 110
+
+    $default  reduce using rule 16 (line)
+
+
+State 99
 
     8 line: KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET SEMICOLON .
 
     $default  reduce using rule 8 (line)
 
 
-State 94
+State 100
 
     7 line: KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line .
 
     $default  reduce using rule 7 (line)
 
 
-State 95
+State 101
 
     6 line: KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET Inside_loops_statments .
 
     $default  reduce using rule 6 (line)
 
 
-State 96
-
-   23 Inside_loops_statments: SCOPE_BRACEOPEN code Inside_loops_statments . SCOPE_BRACECLOSE
-
-    SCOPE_BRACECLOSE  shift, and go to state 103
-
-
-State 97
-
-    9 line: KEYWORD_DO SCOPE_BRACEOPEN Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE . ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
-
-    ARGUMENT_OPENBRACKET  shift, and go to state 104
-
-
-State 98
-
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN . case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
-
-    KEYWORD_CASE  shift, and go to state 105
-
-    $default  reduce using rule 27 (case_statment)
-
-    case_statment  go to state 106
-
-
-State 99
-
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT . exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT . exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
-
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp    go to state 107
-    value  go to state 26
-
-
-State 100
-
-   14 line: datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON .
-
-    $default  reduce using rule 14 (line)
-
-
-State 101
-
-   16 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE . line
-
-    TYPE_INT              shift, and go to state 3
-    TYPE_BOOL             shift, and go to state 4
-    TYPE_CHAR             shift, and go to state 5
-    TYPE_FLOAT            shift, and go to state 6
-    TYPE_CONSTANT         shift, and go to state 7
-    TYPE_STRING           shift, and go to state 8
-    KEYWORD_IF            shift, and go to state 9
-    KEYWORD_WHILE         shift, and go to state 10
-    KEYWORD_DO            shift, and go to state 11
-    KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_FOR           shift, and go to state 13
-    IDENTIFIER            shift, and go to state 14
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 17
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    line      go to state 108
-    exp       go to state 24
-    datatype  go to state 25
-    value     go to state 26
-
-
 State 102
 
-    1 code: code . line
-    5 line: SCOPE_BRACEOPEN code . SCOPE_BRACECLOSE
-   23 Inside_loops_statments: SCOPE_BRACEOPEN code . Inside_loops_statments SCOPE_BRACECLOSE
+   28 Inside_loops_statments: SCOPE_BRACEOPEN code Inside_loops_statments SCOPE_BRACECLOSE .
 
-    TYPE_INT              shift, and go to state 3
-    TYPE_BOOL             shift, and go to state 4
-    TYPE_CHAR             shift, and go to state 5
-    TYPE_FLOAT            shift, and go to state 6
-    TYPE_CONSTANT         shift, and go to state 7
-    TYPE_STRING           shift, and go to state 8
-    KEYWORD_IF            shift, and go to state 9
-    KEYWORD_WHILE         shift, and go to state 10
-    KEYWORD_DO            shift, and go to state 11
-    KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_BREAK         shift, and go to state 49
-    KEYWORD_CONTINUE      shift, and go to state 50
-    KEYWORD_FOR           shift, and go to state 13
-    IDENTIFIER            shift, and go to state 14
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 92
-    SCOPE_BRACECLOSE      shift, and go to state 56
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    line                    go to state 23
-    exp                     go to state 24
-    Inside_loops_statments  go to state 96
-    datatype                go to state 25
-    value                   go to state 26
+    $default  reduce using rule 28 (Inside_loops_statments)
 
 
 State 103
 
-   23 Inside_loops_statments: SCOPE_BRACEOPEN code Inside_loops_statments SCOPE_BRACECLOSE .
+   10 line: KEYWORD_DO line KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   54                     | conditional_statment . LOGIC_OR conditional_statment
 
-    $default  reduce using rule 23 (Inside_loops_statments)
+    LOGIC_AND              shift, and go to state 77
+    LOGIC_OR               shift, and go to state 78
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 111
 
 
 State 104
 
-    9 line: KEYWORD_DO SCOPE_BRACEOPEN Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET . conditional_statment ARGUMENT_CLOSEBRACKET
+    9 line: KEYWORD_DO Inside_loops_statments KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   54                     | conditional_statment . LOGIC_OR conditional_statment
 
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    LOGIC_NOT             shift, and go to state 45
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp                   go to state 46
-    value                 go to state 26
-    conditional_statment  go to state 109
+    LOGIC_AND              shift, and go to state 77
+    LOGIC_OR               shift, and go to state 78
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 112
 
 
 State 105
 
-   26 case_statment: KEYWORD_CASE . value COLON line KEYWORD_BREAK SEMICOLON case_statment
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN . case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
-    IDENTIFIER      shift, and go to state 34
-    OPERATOR_PLUS   shift, and go to state 15
-    OPERATOR_MINUS  shift, and go to state 16
-    VALUE_INT       shift, and go to state 19
-    VALUE_FLOAT     shift, and go to state 20
-    VALUE_BOOL      shift, and go to state 21
-    VALUE_CHAR      shift, and go to state 22
+    KEYWORD_CASE  shift, and go to state 113
 
-    value  go to state 110
+    $default  reduce using rule 32 (case_statment)
+
+    case_statment  go to state 114
 
 
 State 106
 
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment . KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT . exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT . exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
 
-    KEYWORD_DEFAULT  shift, and go to state 111
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 115
+    value  go to state 26
 
 
 State 107
 
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
+   15 line: datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON .
 
-    OPERATOR_PLUS      shift, and go to state 39
-    OPERATOR_MINUS     shift, and go to state 40
-    OPERATOR_MULTIPLY  shift, and go to state 41
-    OPERATOR_DIVIDE    shift, and go to state 42
-    SEMICOLON          shift, and go to state 112
+    $default  reduce using rule 15 (line)
 
 
 State 108
 
-   16 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line .
+   18 line: datatype IDENTIFIER ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET . SCOPE_BRACEOPEN code SCOPE_BRACECLOSE
 
-    $default  reduce using rule 16 (line)
+    SCOPE_BRACEOPEN  shift, and go to state 116
 
 
 State 109
 
-    9 line: KEYWORD_DO SCOPE_BRACEOPEN Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment . ARGUMENT_CLOSEBRACKET
-   48 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
-   49                     | conditional_statment . LOGIC_OR conditional_statment
+   19 argument_variables: datatype IDENTIFIER .
+   20                   | datatype IDENTIFIER . COMMA argument_variables
 
-    LOGIC_AND              shift, and go to state 71
-    LOGIC_OR               shift, and go to state 72
-    ARGUMENT_CLOSEBRACKET  shift, and go to state 113
+    COMMA  shift, and go to state 117
+
+    $default  reduce using rule 19 (argument_variables)
 
 
 State 110
 
-   26 case_statment: KEYWORD_CASE value . COLON line KEYWORD_BREAK SEMICOLON case_statment
-
-    COLON  shift, and go to state 114
-
-
-State 111
-
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT . COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
-
-    COLON  shift, and go to state 115
-
-
-State 112
-
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON . conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON . conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
-
-    IDENTIFIER            shift, and go to state 34
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    LOGIC_NOT             shift, and go to state 45
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    exp                   go to state 46
-    value                 go to state 26
-    conditional_statment  go to state 116
-
-
-State 113
-
-    9 line: KEYWORD_DO SCOPE_BRACEOPEN Inside_loops_statments SCOPE_BRACECLOSE KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET .
-
-    $default  reduce using rule 9 (line)
-
-
-State 114
-
-   26 case_statment: KEYWORD_CASE value COLON . line KEYWORD_BREAK SEMICOLON case_statment
-
-    TYPE_INT              shift, and go to state 3
-    TYPE_BOOL             shift, and go to state 4
-    TYPE_CHAR             shift, and go to state 5
-    TYPE_FLOAT            shift, and go to state 6
-    TYPE_CONSTANT         shift, and go to state 7
-    TYPE_STRING           shift, and go to state 8
-    KEYWORD_IF            shift, and go to state 9
-    KEYWORD_WHILE         shift, and go to state 10
-    KEYWORD_DO            shift, and go to state 11
-    KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_FOR           shift, and go to state 13
-    IDENTIFIER            shift, and go to state 14
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 17
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
-
-    line      go to state 117
-    exp       go to state 24
-    datatype  go to state 25
-    value     go to state 26
-
-
-State 115
-
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON . line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   17 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE . line
 
     TYPE_INT              shift, and go to state 3
     TYPE_BOOL             shift, and go to state 4
@@ -1651,143 +1574,129 @@ State 115
     value     go to state 26
 
 
+State 111
+
+   10 line: KEYWORD_DO line KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET .
+
+    $default  reduce using rule 10 (line)
+
+
+State 112
+
+    9 line: KEYWORD_DO Inside_loops_statments KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET .
+
+    $default  reduce using rule 9 (line)
+
+
+State 113
+
+   31 case_statment: KEYWORD_CASE . value COLON line KEYWORD_BREAK SEMICOLON case_statment
+
+    IDENTIFIER      shift, and go to state 38
+    OPERATOR_PLUS   shift, and go to state 15
+    OPERATOR_MINUS  shift, and go to state 16
+    VALUE_INT       shift, and go to state 19
+    VALUE_FLOAT     shift, and go to state 20
+    VALUE_BOOL      shift, and go to state 21
+    VALUE_CHAR      shift, and go to state 22
+
+    value  go to state 119
+
+
+State 114
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment . KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+
+    KEYWORD_DEFAULT  shift, and go to state 120
+
+
+State 115
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp . SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+
+    OPERATOR_PLUS      shift, and go to state 43
+    OPERATOR_MINUS     shift, and go to state 44
+    OPERATOR_MULTIPLY  shift, and go to state 45
+    OPERATOR_DIVIDE    shift, and go to state 46
+    SEMICOLON          shift, and go to state 121
+
+
 State 116
 
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment . SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment . SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
-   48 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
-   49                     | conditional_statment . LOGIC_OR conditional_statment
+   18 line: datatype IDENTIFIER ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN . code SCOPE_BRACECLOSE
 
-    LOGIC_AND  shift, and go to state 71
-    LOGIC_OR   shift, and go to state 72
-    SEMICOLON  shift, and go to state 119
+    $default  reduce using rule 2 (code)
+
+    code  go to state 122
 
 
 State 117
 
-   26 case_statment: KEYWORD_CASE value COLON line . KEYWORD_BREAK SEMICOLON case_statment
+   20 argument_variables: datatype IDENTIFIER COMMA . argument_variables
 
-    KEYWORD_BREAK  shift, and go to state 120
+    TYPE_INT       shift, and go to state 3
+    TYPE_BOOL      shift, and go to state 4
+    TYPE_CHAR      shift, and go to state 5
+    TYPE_FLOAT     shift, and go to state 6
+    TYPE_CONSTANT  shift, and go to state 7
+    TYPE_STRING    shift, and go to state 8
+
+    $default  reduce using rule 21 (argument_variables)
+
+    argument_variables  go to state 123
+    datatype            go to state 89
 
 
 State 118
 
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line . KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   17 line: KEYWORD_IF ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET line KEYWORD_ELSE line .
 
-    KEYWORD_BREAK  shift, and go to state 121
+    $default  reduce using rule 17 (line)
 
 
 State 119
 
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON . IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON . IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+   31 case_statment: KEYWORD_CASE value . COLON line KEYWORD_BREAK SEMICOLON case_statment
 
-    IDENTIFIER  shift, and go to state 122
+    COLON  shift, and go to state 124
 
 
 State 120
 
-   26 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK . SEMICOLON case_statment
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT . COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
-    SEMICOLON  shift, and go to state 123
+    COLON  shift, and go to state 125
 
 
 State 121
 
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK . SEMICOLON case_statment SCOPE_BRACECLOSE
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON . conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON . conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
 
-    SEMICOLON  shift, and go to state 124
-
-
-State 122
-
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER . OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER . OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
-
-    OPERATOR_ASSIGNMENT  shift, and go to state 125
-
-
-State 123
-
-   26 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON . case_statment
-
-    KEYWORD_CASE  shift, and go to state 105
-
-    $default  reduce using rule 27 (case_statment)
-
-    case_statment  go to state 126
-
-
-State 124
-
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON . case_statment SCOPE_BRACECLOSE
-
-    KEYWORD_CASE  shift, and go to state 105
-
-    $default  reduce using rule 27 (case_statment)
-
-    case_statment  go to state 127
-
-
-State 125
-
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT . exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT . exp ARGUMENT_CLOSEBRACKET line
-
-    IDENTIFIER            shift, and go to state 34
+    IDENTIFIER            shift, and go to state 38
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
+    LOGIC_NOT             shift, and go to state 49
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    exp    go to state 128
-    value  go to state 26
+    exp                   go to state 50
+    value                 go to state 26
+    conditional_statment  go to state 126
 
 
-State 126
+State 122
 
-   26 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment .
-
-    $default  reduce using rule 26 (case_statment)
-
-
-State 127
-
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment . SCOPE_BRACECLOSE
-
-    SCOPE_BRACECLOSE  shift, and go to state 129
-
-
-State 128
-
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp . ARGUMENT_CLOSEBRACKET Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp . ARGUMENT_CLOSEBRACKET line
-   17 exp: exp . OPERATOR_MULTIPLY exp
-   18    | exp . OPERATOR_DIVIDE exp
-   19    | exp . OPERATOR_PLUS exp
-   20    | exp . OPERATOR_MINUS exp
-
-    OPERATOR_PLUS          shift, and go to state 39
-    OPERATOR_MINUS         shift, and go to state 40
-    OPERATOR_MULTIPLY      shift, and go to state 41
-    OPERATOR_DIVIDE        shift, and go to state 42
-    ARGUMENT_CLOSEBRACKET  shift, and go to state 130
-
-
-State 129
-
-   10 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE .
-
-    $default  reduce using rule 10 (line)
-
-
-State 130
-
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET . Inside_loops_statments
-   12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET . line
+    1 code: code . line
+   18 line: datatype IDENTIFIER ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code . SCOPE_BRACECLOSE
 
     TYPE_INT              shift, and go to state 3
     TYPE_BOOL             shift, and go to state 4
@@ -1799,35 +1708,277 @@ State 130
     KEYWORD_WHILE         shift, and go to state 10
     KEYWORD_DO            shift, and go to state 11
     KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_BREAK         shift, and go to state 49
-    KEYWORD_CONTINUE      shift, and go to state 50
     KEYWORD_FOR           shift, and go to state 13
     IDENTIFIER            shift, and go to state 14
     OPERATOR_PLUS         shift, and go to state 15
     OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 92
+    SCOPE_BRACEOPEN       shift, and go to state 17
+    SCOPE_BRACECLOSE      shift, and go to state 127
     ARGUMENT_OPENBRACKET  shift, and go to state 18
     VALUE_INT             shift, and go to state 19
     VALUE_FLOAT           shift, and go to state 20
     VALUE_BOOL            shift, and go to state 21
     VALUE_CHAR            shift, and go to state 22
 
-    line                    go to state 131
-    exp                     go to state 24
-    Inside_loops_statments  go to state 132
-    datatype                go to state 25
-    value                   go to state 26
+    line      go to state 23
+    exp       go to state 24
+    datatype  go to state 25
+    value     go to state 26
+
+
+State 123
+
+   20 argument_variables: datatype IDENTIFIER COMMA argument_variables .
+
+    $default  reduce using rule 20 (argument_variables)
+
+
+State 124
+
+   31 case_statment: KEYWORD_CASE value COLON . line KEYWORD_BREAK SEMICOLON case_statment
+
+    TYPE_INT              shift, and go to state 3
+    TYPE_BOOL             shift, and go to state 4
+    TYPE_CHAR             shift, and go to state 5
+    TYPE_FLOAT            shift, and go to state 6
+    TYPE_CONSTANT         shift, and go to state 7
+    TYPE_STRING           shift, and go to state 8
+    KEYWORD_IF            shift, and go to state 9
+    KEYWORD_WHILE         shift, and go to state 10
+    KEYWORD_DO            shift, and go to state 11
+    KEYWORD_SWITCH        shift, and go to state 12
+    KEYWORD_FOR           shift, and go to state 13
+    IDENTIFIER            shift, and go to state 14
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    SCOPE_BRACEOPEN       shift, and go to state 17
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    line      go to state 128
+    exp       go to state 24
+    datatype  go to state 25
+    value     go to state 26
+
+
+State 125
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON . line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+
+    TYPE_INT              shift, and go to state 3
+    TYPE_BOOL             shift, and go to state 4
+    TYPE_CHAR             shift, and go to state 5
+    TYPE_FLOAT            shift, and go to state 6
+    TYPE_CONSTANT         shift, and go to state 7
+    TYPE_STRING           shift, and go to state 8
+    KEYWORD_IF            shift, and go to state 9
+    KEYWORD_WHILE         shift, and go to state 10
+    KEYWORD_DO            shift, and go to state 11
+    KEYWORD_SWITCH        shift, and go to state 12
+    KEYWORD_FOR           shift, and go to state 13
+    IDENTIFIER            shift, and go to state 14
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    SCOPE_BRACEOPEN       shift, and go to state 17
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    line      go to state 129
+    exp       go to state 24
+    datatype  go to state 25
+    value     go to state 26
+
+
+State 126
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment . SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment . SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+   53 conditional_statment: conditional_statment . LOGIC_AND conditional_statment
+   54                     | conditional_statment . LOGIC_OR conditional_statment
+
+    LOGIC_AND  shift, and go to state 77
+    LOGIC_OR   shift, and go to state 78
+    SEMICOLON  shift, and go to state 130
+
+
+State 127
+
+   18 line: datatype IDENTIFIER ARGUMENT_OPENBRACKET argument_variables ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN code SCOPE_BRACECLOSE .
+
+    $default  reduce using rule 18 (line)
+
+
+State 128
+
+   31 case_statment: KEYWORD_CASE value COLON line . KEYWORD_BREAK SEMICOLON case_statment
+
+    KEYWORD_BREAK  shift, and go to state 131
+
+
+State 129
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line . KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+
+    KEYWORD_BREAK  shift, and go to state 132
+
+
+State 130
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON . IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON . IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+
+    IDENTIFIER  shift, and go to state 133
 
 
 State 131
 
-   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line .
+   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK . SEMICOLON case_statment
 
-    $default  reduce using rule 12 (line)
+    SEMICOLON  shift, and go to state 134
 
 
 State 132
 
-   11 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments .
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK . SEMICOLON case_statment SCOPE_BRACECLOSE
+
+    SEMICOLON  shift, and go to state 135
+
+
+State 133
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER . OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER . OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
+
+    OPERATOR_ASSIGNMENT  shift, and go to state 136
+
+
+State 134
+
+   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON . case_statment
+
+    KEYWORD_CASE  shift, and go to state 113
+
+    $default  reduce using rule 32 (case_statment)
+
+    case_statment  go to state 137
+
+
+State 135
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON . case_statment SCOPE_BRACECLOSE
+
+    KEYWORD_CASE  shift, and go to state 113
+
+    $default  reduce using rule 32 (case_statment)
+
+    case_statment  go to state 138
+
+
+State 136
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT . exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT . exp ARGUMENT_CLOSEBRACKET line
+
+    IDENTIFIER            shift, and go to state 38
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    exp    go to state 139
+    value  go to state 26
+
+
+State 137
+
+   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment .
+
+    $default  reduce using rule 31 (case_statment)
+
+
+State 138
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment . SCOPE_BRACECLOSE
+
+    SCOPE_BRACECLOSE  shift, and go to state 140
+
+
+State 139
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp . ARGUMENT_CLOSEBRACKET Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp . ARGUMENT_CLOSEBRACKET line
+   22 exp: exp . OPERATOR_MULTIPLY exp
+   23    | exp . OPERATOR_DIVIDE exp
+   24    | exp . OPERATOR_PLUS exp
+   25    | exp . OPERATOR_MINUS exp
+
+    OPERATOR_PLUS          shift, and go to state 43
+    OPERATOR_MINUS         shift, and go to state 44
+    OPERATOR_MULTIPLY      shift, and go to state 45
+    OPERATOR_DIVIDE        shift, and go to state 46
+    ARGUMENT_CLOSEBRACKET  shift, and go to state 141
+
+
+State 140
+
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE .
 
     $default  reduce using rule 11 (line)
+
+
+State 141
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET . Inside_loops_statments
+   13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET . line
+
+    TYPE_INT              shift, and go to state 3
+    TYPE_BOOL             shift, and go to state 4
+    TYPE_CHAR             shift, and go to state 5
+    TYPE_FLOAT            shift, and go to state 6
+    TYPE_CONSTANT         shift, and go to state 7
+    TYPE_STRING           shift, and go to state 8
+    KEYWORD_IF            shift, and go to state 9
+    KEYWORD_WHILE         shift, and go to state 10
+    KEYWORD_DO            shift, and go to state 11
+    KEYWORD_SWITCH        shift, and go to state 12
+    KEYWORD_BREAK         shift, and go to state 30
+    KEYWORD_CONTINUE      shift, and go to state 31
+    KEYWORD_FOR           shift, and go to state 13
+    IDENTIFIER            shift, and go to state 14
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    SCOPE_BRACEOPEN       shift, and go to state 32
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    line                    go to state 142
+    exp                     go to state 24
+    Inside_loops_statments  go to state 143
+    datatype                go to state 25
+    value                   go to state 26
+
+
+State 142
+
+   13 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line .
+
+    $default  reduce using rule 13 (line)
+
+
+State 143
+
+   12 line: KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments .
+
+    $default  reduce using rule 12 (line)

@@ -82,13 +82,14 @@ extern int yydebug;
      ARGUMENT_OPENBRACKET = 291,
      ARGUMENT_CLOSEBRACKET = 292,
      SEMICOLON = 293,
-     VALUE_INT = 294,
-     VALUE_FLOAT = 295,
-     VALUE_BOOL = 296,
-     VALUE_CHAR = 297,
-     VALUE_STRING = 298,
-     COLON = 299,
-     IFX = 300
+     COMMA = 294,
+     VALUE_INT = 295,
+     VALUE_FLOAT = 296,
+     VALUE_BOOL = 297,
+     VALUE_CHAR = 298,
+     VALUE_STRING = 299,
+     COLON = 300,
+     IFX = 301
    };
 #endif
 /* Tokens.  */
@@ -128,13 +129,14 @@ extern int yydebug;
 #define ARGUMENT_OPENBRACKET 291
 #define ARGUMENT_CLOSEBRACKET 292
 #define SEMICOLON 293
-#define VALUE_INT 294
-#define VALUE_FLOAT 295
-#define VALUE_BOOL 296
-#define VALUE_CHAR 297
-#define VALUE_STRING 298
-#define COLON 299
-#define IFX 300
+#define COMMA 294
+#define VALUE_INT 295
+#define VALUE_FLOAT 296
+#define VALUE_BOOL 297
+#define VALUE_CHAR 298
+#define VALUE_STRING 299
+#define COLON 300
+#define IFX 301
 
 
 
@@ -146,7 +148,7 @@ typedef union YYSTYPE
  char* string; char character; int integer_number ; float float_number; 
 
 /* Line 2058 of yacc.c  */
-#line 150 "y.tab.h"
+#line 152 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

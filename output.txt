@@ -1,16 +1,32 @@
-iDENtufier 
+
+ TYPE_INT 
 integer value 
- equal statement 
+ASSignment decleration 
+iDENtufier 
+iDENtufier 
+ AND statement 
+
+ TYPE_INT 
+integer value 
+integer value 
+plus statementASSignment decleration 
+if without else 
+iDENtufier 
+iDENtufier 
+plus statementiDENtufier 
+integer value 
+plus statement OR statement 
 a scope decleration 
- a while loop has one line 
-iDENtufier 
+a scope decleration 
+if else statment 
 integer value 
- equal statement 
-iDENtufier 
 integer value 
- equal statement 
- a while loop with braces
- a while loop has one line 
+initilization 
+integer value 
+integer value 
+initilization 
+CAse statemnentCAse statemnentinteger value 
+initilization 
 syntax error
 
  Parsing faild 
