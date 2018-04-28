@@ -141,15 +141,7 @@ extern int yydebug;
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-{
-/* Line 2058 of yacc.c  */
-#line 14 "yacc.y"
- char* string; char character; int integer_number ; float float_number; 
-
-/* Line 2058 of yacc.c  */
-#line 152 "y.tab.h"
-} YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

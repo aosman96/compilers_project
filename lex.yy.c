@@ -900,22 +900,22 @@ return ARGUMENT_CLOSEBRACKET;
 case 38:
 YY_RULE_SETUP
 #line 57 "lexer.l"
-{yylval.integer_number=atoi(yytext); return VALUE_INT;}
+{yylval=atoi(yytext); return VALUE_INT;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 58 "lexer.l"
-{yylval.float_number=atof(yytext); return VALUE_FLOAT;}
+{yylval=atof(yytext); return VALUE_FLOAT;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 59 "lexer.l"
-{yylval.string=yytext; return VALUE_BOOL;}
+{ return VALUE_BOOL;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 60 "lexer.l"
-{yylval.character=yytext[0]; return VALUE_CHAR;}
+{ return VALUE_CHAR;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
@@ -925,12 +925,12 @@ YY_RULE_SETUP
 case 43:
 YY_RULE_SETUP
 #line 62 "lexer.l"
-{yylval.string=yytext;return IDENTIFIER;}
+{return IDENTIFIER;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 63 "lexer.l"
-{yylval.string=yytext;return VALUE_STRING;}
+{return VALUE_STRING;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP

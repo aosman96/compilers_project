@@ -11,7 +11,7 @@
 	int symbolVal(char symbol);
 	void updateSymbolVal(char symbol , int val);
 %}
-%union { char* string; char character; int integer_number ; float float_number; }
+
 
 //Start   ----------------------------------------------->
 %start code 
@@ -80,17 +80,13 @@
 %left LOGIC_AND LOGIC_OR
 %left RELATION_EQUALS RELATION_NOTEQUAL RELATION_LESSER RELATION_GREATER RELATION_LESSEREQUAL RELATION_GREATEREQUAL
 %left OPERATOR_PLUS OPERATOR_MINUS 
-%left OPERATOR_MULTIPLY OPERATOR_DIVIDE 
+%left OPERATOR_MULTIPLY OPERATOR_DIVIDE
 %nonassoc IFX
 %nonassoc KEYWORD_ELSE
 //TYPES   ----------------------------------------->
-/*
-%type <boolean> conditional_statment  VALUE_BOOL
-%type <string>  datatype 
-%type <character> VALUE_CHAR
-%type <integer_number> VALUE_INT
-%type <float_number> VALUE_FLOAT
-*/
+
+
+
 
 
 %% 
@@ -130,12 +126,22 @@ argument_variables : datatype IDENTIFIER |
 		     |
 
  exp    :                    
-	 exp OPERATOR_MULTIPLY exp                  {printf("\n multiplication statement \n");}
-	| exp OPERATOR_DIVIDE exp                    {printf("\n division statement \n ");}
-	| exp OPERATOR_PLUS exp                        {printf("\n plus statement \n");} // + 
-        | exp OPERATOR_MINUS exp			{printf("\n minus statement \n ");}
-	| ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET {printf("\n argument experation \n");}
-	| value 
+	 exp OPERATOR_MULTIPLY exp				{$$=$1 * $3; printf("multiplication statement \n");}
+	| exp OPERATOR_DIVIDE exp				{$$=$1 / $3; printf("Division statement \n ");}
+	| exp OPERATOR_PLUS exp					{$$=$1+$3;  printf("plus statement \n");} 
+        | exp OPERATOR_MINUS exp				{$$=$1-$3; printf("minus statement \n ");}
+	| ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET	{$$=$2; printf("argument experation \n");}
+	| exp LOGIC_AND exp					{$$=$1&& $3; printf("\n logical and statement \n ");}
+	| LOGIC_NOT exp						{$$= !$2; printf("\n logical not statement \n ");}
+	| exp LOGIC_OR exp					{$$=$1 || $3; printf("\n logical or statement \n ");}
+	| exp RELATION_GREATER exp {$$=$1>$3; printf(" \n greater than statement \n");}
+		     | exp RELATION_LESSER exp {$$=$1<$3;printf(" \n lesser than statement \n");}
+		     | exp RELATION_EQUALS exp  {$$=$1==$3; printf(" \n equal statement \n");}
+		     | exp RELATION_NOTEQUAL exp  {$$=$1!=$3; printf("\n not equal statement \n");}
+		     | exp RELATION_LESSEREQUAL exp  {$$=$1<=$3; printf("\n less equal than statement \n");}
+		     | exp RELATION_GREATEREQUAL exp {$$=$1>=$3; printf("\n greater equal than statement \n");}
+		     
+	| value							{$$=$1;}
         ;
 
 
@@ -166,31 +172,20 @@ datatype: TYPE_INT    //{$$= "int"} {prinf("\n TYPE_INT \n");}
 	;
 
 value   : 
-	  IDENTIFIER  {printf("\n iDENtufier \n");}
-	| VALUE_INT  {printf("\n integer value \n");}
-	| VALUE_FLOAT {printf("\n float value \n");}
-	| VALUE_BOOL {printf(" \n boolean value \n");}
-	| VALUE_CHAR {printf("\n char value \n");}
-	| OPERATOR_MINUS value
-	| OPERATOR_PLUS value
+	  IDENTIFIER				{printf(" identifier \n");}
+	| VALUE_INT				{printf("integer value \n");}
+	| VALUE_FLOAT				{printf(" float value \n");}
+	| VALUE_BOOL				{printf(" boolean value \n");}
+	| VALUE_CHAR				{printf("char value \n");}
+	| OPERATOR_MINUS value			{printf("subtraction \n");}
+	| OPERATOR_PLUS value			{printf("addition \n");}
 	
 	
 	;
 
 conditional_statment :
-		       exp
-		     | exp RELATION_GREATER exp {printf(" \n greater than statement \n");}
-		     | exp RELATION_LESSER exp {printf(" \n lesser than statement \n");}
-		     | exp RELATION_EQUALS exp  {printf(" \n equal statement \n");}
-		     | exp RELATION_NOTEQUAL exp  {printf("\n not equal statement \n");}
-		     | exp RELATION_LESSEREQUAL exp  {printf("\n less equal than statement \n");}
-		     | exp RELATION_GREATEREQUAL exp {printf("\n greater equal than statement \n");}
-		     |  conditional_statment LOGIC_AND conditional_statment {printf("\n AND statement \n");}
-		     |	 conditional_statment LOGIC_OR conditional_statment {printf("\n OR statement \n");}
-		     |  LOGIC_NOT conditional_statment  {printf(" \n LOGICAL NOT statement \n");}
-		     //| ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET 
-			
-		;
+                    exp
+		    ;
 %%
 
 void yyerror(char *s) {

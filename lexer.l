@@ -54,13 +54,13 @@ for 						                          return KEYWORD_FOR;
 
 
 
-[0-9]+ 		    	        					{yylval.integer_number=atoi(yytext); return VALUE_INT;}
-(([0-9])*\.([0-9])+)|(([0-9])+\.([0-9])*)                               {yylval.float_number=atof(yytext); return VALUE_FLOAT;}
-(false|true)                                                            {yylval.string=yytext; return VALUE_BOOL;}
-'.'		      					        	{yylval.character=yytext[0]; return VALUE_CHAR;}
+[0-9]+ 		    	        					{yylval=atoi(yytext); return VALUE_INT;}
+(([0-9])*\.([0-9])+)|(([0-9])+\.([0-9])*)                               {yylval=atof(yytext); return VALUE_FLOAT;}
+(false|true)                                                            { return VALUE_BOOL;}
+'.'		      					        	{ return VALUE_CHAR;}
 [ \t\n]+	 						          ;
-[a-zA-Z_]([a-zA-Z_]|[0-9])*		     		         	{yylval.string=yytext;return IDENTIFIER;}
-".*"									{yylval.string=yytext;return VALUE_STRING;}
+[a-zA-Z_]([a-zA-Z_]|[0-9])*		     		         	{return IDENTIFIER;}
+".*"									{return VALUE_STRING;}
 
 %%
 

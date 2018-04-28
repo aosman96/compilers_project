@@ -1,17 +1,78 @@
 
-int x ;
+int z ;
+
 int y=3;
+
+char x='a';
+float f=0.03;
+const int x=3;
+const char x='a';
+const float g=1.0;
+z=x+y;
+z=z-y;
+x=3/y;
+y=3*4;
+z=y;
+
 if(x==y)
+
 x=x+y;
-switch(x)
+if(x&&3)
 {
+
+x=x*3;
+}
+else
+{
+x=x+y;
+}
+
+
+do
+{
+
+x=x+y;
+
+}
+while(x<=3 || y!=4)
+
+for(int i=0;i<4;i=i+1)
+{
+x=x+i;
+}
+while(true)
+{
+}
+switch (x){
 case 1:
-	x=x+1;
-	break;
+y=a+b;
+z=c+d;
+break;
 case 2:
-	x=x+2 ;
-	break;
-default :
-x =x+3 ;
+y = b*a;
+z = c;
+break;
+default:
+a=a+1;
 break;
 }
+
+if(true || false)
+{
+
+}
+
+if(x&&y){
+if(y!=0)
+x=1;
+}
+
+if(!((x||y) && y))
+{
+}
+
+x=(3*4)+5;
+x=4+((3*2)/5)*8;
+bool x = !(false &&true);
+
+

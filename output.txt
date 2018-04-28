@@ -5,51 +5,178 @@
 Decleration 
 
  TYPE_INT 
-
- integer value 
+integer value 
+ASSignment decleration 
+char value 
+ASSignment decleration 
+ float value 
 ASSignment decleration 
 
- iDENtufier 
-
- iDENtufier 
+ TYPE_INT 
+integer value 
+ASSignment decleration 
+char value 
+ASSignment decleration 
+ float value 
+ASSignment decleration 
+ identifier 
+ identifier 
+plus statement 
+initilization 
+ identifier 
+ identifier 
+minus statement 
+ initilization 
+integer value 
+ identifier 
+Division statement 
+ initilization 
+integer value 
+integer value 
+multiplication statement 
+initilization 
+ identifier 
+initilization 
+ identifier 
+ identifier 
  
  equal statement 
-
- iDENtufier 
-
- iDENtufier 
-
- plus statement 
+ identifier 
+ identifier 
+plus statement 
 initilization 
 if without else 
+ identifier 
+integer value 
 
- integer value 
-
- iDENtufier 
-
- integer value 
-
- plus statement 
+ logical and statement 
+  identifier 
+integer value 
+multiplication statement 
 initilization 
+a scope decleration 
+ identifier 
+ identifier 
+plus statement 
+initilization 
+a scope decleration 
+if else statment 
+ identifier 
+ identifier 
+plus statement 
+initilization 
+a scope decleration 
+ identifier 
+integer value 
 
- integer value 
+ less equal than statement 
+ identifier 
+integer value 
 
- iDENtufier 
+ not equal statement 
 
- integer value 
+ logical or statement 
+ Do while loop 
 
- plus statement 
+ TYPE_INT 
+integer value 
+ identifier 
+integer value 
+ 
+ lesser than statement 
+ identifier 
+integer value 
+plus statement 
+ identifier 
+ identifier 
+plus statement 
+initilization 
+a scope decleration 
+ boolean value 
+a scope decleration 
+ a while loop has one line 
+integer value 
+ identifier 
+ identifier 
+plus statement 
+initilization 
+ identifier 
+ identifier 
+plus statement 
+initilization 
+integer value 
+ identifier 
+ identifier 
+multiplication statement 
+initilization 
+ identifier 
 initilization 
 
  CAse statemnent 
 
  CAse statemnent 
-
- iDENtufier 
-
- integer value 
-
- plus statement 
+ identifier 
+integer value 
+plus statement 
 initilization 
 
  a switch case statement 
+ boolean value 
+ boolean value 
+
+ logical or statement 
+ a scope decleration 
+if without else 
+ identifier 
+ identifier 
+
+ logical and statement 
+  identifier 
+integer value 
+
+ not equal statement 
+integer value 
+initilization 
+if without else 
+a scope decleration 
+if without else 
+ identifier 
+ identifier 
+
+ logical or statement 
+ argument experation 
+ identifier 
+
+ logical and statement 
+ argument experation 
+
+ logical not statement 
+ a scope decleration 
+if without else 
+integer value 
+integer value 
+multiplication statement 
+argument experation 
+integer value 
+plus statement 
+initilization 
+integer value 
+integer value 
+integer value 
+multiplication statement 
+argument experation 
+integer value 
+Division statement 
+ argument experation 
+integer value 
+multiplication statement 
+plus statement 
+initilization 
+ boolean value 
+ boolean value 
+
+ logical and statement 
+ argument experation 
+
+ logical not statement 
+ ASSignment decleration 
