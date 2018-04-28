@@ -6,7 +6,7 @@
 	#include<stdio.h>
 	#include<stdlib.h>
 	#include<ctype.h>
-	FILE * test ;
+	FILE * yyin  ;
 	 char * symbols[3][100000] ; // 0 ->  NAME , 1 -> TYPE , 2 -> Value
 	int symbolVal(char symbol);
 	void updateSymbolVal(char symbol , int val);
@@ -62,6 +62,7 @@
 %token ARGUMENT_CLOSEBRACKET 
 
 %token SEMICOLON 
+%token COMMA
 
 %token VALUE_INT 
 %token VALUE_FLOAT 
@@ -109,7 +110,7 @@ code :  code line
 	| KEYWORD_DO   Inside_loops_statments  KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET  {printf("Do while loop \n");}// the do while loop
 	| KEYWORD_DO   line  KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET  {printf("Do while loop \n");}// the do while loop
 	
-	| KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment  KEYWORD_DEFAULT  COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE                      {printf("a switch case statement");} // swithc case statment 
+	| KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment  KEYWORD_DEFAULT  COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE                      {printf("a switch case statement");} // swithc case statment 
 	
 	| KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
 	| KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
@@ -125,15 +126,15 @@ code :  code line
 
 
 argument_variables : datatype IDENTIFIER |
-		     datatype IDENTIFIER ', ' argument_variables 
+		     datatype IDENTIFIER COMMA argument_variables 
 		     |
 
  exp    :                    
-	 exp OPERATOR_MULTIPLY exp                  {printf("multiplication statement \n");}
-	| exp OPERATOR_DIVIDE exp                    {printf("division statement");}
-	| exp OPERATOR_PLUS exp                        {printf("plus statement");} // + 
-        | exp OPERATOR_MINUS exp			{printf("minus statement");}
-	| ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET {printf(" argument experation \n");}
+	 exp OPERATOR_MULTIPLY exp                  {printf("\n multiplication statement \n");}
+	| exp OPERATOR_DIVIDE exp                    {printf("\n division statement \n ");}
+	| exp OPERATOR_PLUS exp                        {printf("\n plus statement \n");} // + 
+        | exp OPERATOR_MINUS exp			{printf("\n minus statement \n ");}
+	| ARGUMENT_OPENBRACKET exp ARGUMENT_CLOSEBRACKET {printf("\n argument experation \n");}
 	| value 
         ;
 
@@ -149,13 +150,13 @@ Inside_loops_statments :
 
 
 case_statment : 
-		KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment   {printf("CAse statemnent");}
+		KEYWORD_CASE value COLON code KEYWORD_BREAK SEMICOLON case_statment   {printf("\n CAse statemnent \n");}
 		| 
 		;
 
 
 
-datatype: TYPE_INT    //{$$= "int"} {prinf("\n TYPE_INT");}
+datatype: TYPE_INT    //{$$= "int"} {prinf("\n TYPE_INT \n");}
 	| TYPE_BOOL //{$$= "boolean"}
 	| TYPE_CHAR //{$$= "char"}
 	| TYPE_FLOAT //{$$= "float"}
@@ -165,11 +166,11 @@ datatype: TYPE_INT    //{$$= "int"} {prinf("\n TYPE_INT");}
 	;
 
 value   : 
-	  IDENTIFIER  {printf("iDENtufier \n");}
-	| VALUE_INT  {printf("integer value \n");}
-	| VALUE_FLOAT {printf("float value \n");}
-	| VALUE_BOOL {printf("boolean value \n");}
-	| VALUE_CHAR {printf("char value \n");}
+	  IDENTIFIER  {printf("\n iDENtufier \n");}
+	| VALUE_INT  {printf("\n integer value \n");}
+	| VALUE_FLOAT {printf("\n float value \n");}
+	| VALUE_BOOL {printf(" \n boolean value \n");}
+	| VALUE_CHAR {printf("\n char value \n");}
 	| OPERATOR_MINUS value
 	| OPERATOR_PLUS value
 	
@@ -178,15 +179,15 @@ value   :
 
 conditional_statment :
 		       exp
-		     | exp RELATION_GREATER exp {printf(" greater than statement \n");}
-		     | exp RELATION_LESSER exp {printf(" lesser than statement \n");}
-		     | exp RELATION_EQUALS exp  {printf(" equal statement \n");}
-		     | exp RELATION_NOTEQUAL exp  {printf(" not equal statement \n");}
-		     | exp RELATION_LESSEREQUAL exp  {printf(" less equal than statement \n");}
-		     | exp RELATION_GREATEREQUAL exp {printf(" greater equal than statement \n");}
-		     |  conditional_statment LOGIC_AND conditional_statment {printf(" AND statement \n");}
-		     |	 conditional_statment LOGIC_OR conditional_statment {printf(" OR statement \n");}
-		     |  LOGIC_NOT conditional_statment  {printf(" LOGICAL NOT statement \n");}
+		     | exp RELATION_GREATER exp {printf(" \n greater than statement \n");}
+		     | exp RELATION_LESSER exp {printf(" \n lesser than statement \n");}
+		     | exp RELATION_EQUALS exp  {printf(" \n equal statement \n");}
+		     | exp RELATION_NOTEQUAL exp  {printf("\n not equal statement \n");}
+		     | exp RELATION_LESSEREQUAL exp  {printf("\n less equal than statement \n");}
+		     | exp RELATION_GREATEREQUAL exp {printf("\n greater equal than statement \n");}
+		     |  conditional_statment LOGIC_AND conditional_statment {printf("\n AND statement \n");}
+		     |	 conditional_statment LOGIC_OR conditional_statment {printf("\n OR statement \n");}
+		     |  LOGIC_NOT conditional_statment  {printf(" \n LOGICAL NOT statement \n");}
 		     //| ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET 
 			
 		;
@@ -200,17 +201,19 @@ void yyerror(char *s) {
 int main (void)
 {
 
-test = fopen("testfile.txt","r");
-if(!yyparse())
-
+yyin  = fopen("testfile.txt","r+");
+if(yyin ==NULL)
 {
-printf("\n Parsing complete \n");
+	printf("\n error \n");
 }
 else
 {
-printf("\n Parsing faild \n");
-}
-fclose(test);
+	
+		printf("\n Parsing  \n");
+		yyparse();
+     
+}	
+fclose(yyin );
 return 0;
 
 }

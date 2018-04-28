@@ -1,32 +1,55 @@
 
+ Parsing  
+
  TYPE_INT 
-integer value 
+Decleration 
+
+ TYPE_INT 
+
+ integer value 
 ASSignment decleration 
-iDENtufier 
-iDENtufier 
- AND statement 
 
- TYPE_INT 
-integer value 
-integer value 
-plus statementASSignment decleration 
+ iDENtufier 
+
+ iDENtufier 
+ 
+ equal statement 
+
+ iDENtufier 
+
+ iDENtufier 
+
+ plus statement 
+initilization 
 if without else 
-iDENtufier 
-iDENtufier 
-plus statementiDENtufier 
-integer value 
-plus statement OR statement 
-a scope decleration 
-a scope decleration 
-if else statment 
-integer value 
-integer value 
-initilization 
-integer value 
-integer value 
-initilization 
-CAse statemnentCAse statemnentinteger value 
-initilization 
-syntax error
 
- Parsing faild 
+ integer value 
+
+ iDENtufier 
+
+ integer value 
+
+ plus statement 
+initilization 
+
+ integer value 
+
+ iDENtufier 
+
+ integer value 
+
+ plus statement 
+initilization 
+
+ CAse statemnent 
+
+ CAse statemnent 
+
+ iDENtufier 
+
+ integer value 
+
+ plus statement 
+initilization 
+
+ a switch case statement 

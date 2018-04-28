@@ -1,6 +1,7 @@
 %option nounput yylineno
 %{
-#include "y.tab.h";
+#include "y.tab.h"
+FILE * test;
 %}
 
 
@@ -14,7 +15,7 @@ float					  	                          return TYPE_FLOAT;
 char				   		                          return TYPE_CHAR;
 bool						                          return TYPE_BOOL;
 const					  	                          return TYPE_CONSTANT;
-string 												  return TYPE_STRING;   	
+string 									  return TYPE_STRING;   	
 
 if			  			                          return KEYWORD_IF;
 else 					    	                          return KEYWORD_ELSE;
@@ -53,13 +54,13 @@ for 						                          return KEYWORD_FOR;
 
 
 
-[0-9]+ 		    	        							{yylval.integer_number=atoi(yytext); return VALUE_INT;}
-(([0-9])*\.([0-9])+)|(([0-9])+\.([0-9])*)                  {yylval.float_number=atof(yytext); return VALUE_FLOAT;}
-(false|true)                                                    {yylval.string=yytext; return VALUE_BOOL;}
-'.'		      					        						{yylval.character=yytext[0]; return VALUE_CHAR;}
+[0-9]+ 		    	        					{yylval.integer_number=atoi(yytext); return VALUE_INT;}
+(([0-9])*\.([0-9])+)|(([0-9])+\.([0-9])*)                               {yylval.float_number=atof(yytext); return VALUE_FLOAT;}
+(false|true)                                                            {yylval.string=yytext; return VALUE_BOOL;}
+'.'		      					        	{yylval.character=yytext[0]; return VALUE_CHAR;}
 [ \t\n]+	 						          ;
-[a-zA-Z_]([a-zA-Z_]|[0-9])*		     		         			{yylval.string=yytext;return IDENTIFIER;}
-".*"															{yylval.string=yytext;return VALUE_STRING;}
+[a-zA-Z_]([a-zA-Z_]|[0-9])*		     		         	{yylval.string=yytext;return IDENTIFIER;}
+".*"									{yylval.string=yytext;return VALUE_STRING;}
 
 %%
 

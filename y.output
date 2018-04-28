@@ -18,7 +18,7 @@ Grammar
     8     | KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET SEMICOLON
     9     | KEYWORD_DO Inside_loops_statments KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
    10     | KEYWORD_DO line KEYWORD_WHILE ARGUMENT_OPENBRACKET conditional_statment ARGUMENT_CLOSEBRACKET
-   11     | KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11     | KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
    12     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET Inside_loops_statments
    13     | KEYWORD_FOR ARGUMENT_OPENBRACKET datatype IDENTIFIER OPERATOR_ASSIGNMENT exp SEMICOLON conditional_statment SEMICOLON IDENTIFIER OPERATOR_ASSIGNMENT exp ARGUMENT_CLOSEBRACKET line
    14     | datatype IDENTIFIER SEMICOLON
@@ -42,7 +42,7 @@ Grammar
    29                       | KEYWORD_CONTINUE SEMICOLON
    30                       | KEYWORD_BREAK SEMICOLON
 
-   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment
+   31 case_statment: KEYWORD_CASE value COLON code KEYWORD_BREAK SEMICOLON case_statment
    32              | /* empty */
 
    33 datatype: TYPE_INT
@@ -127,10 +127,10 @@ Nonterminals, with rules where they appear
 $accept (47)
     on left: 0
 code (48)
-    on left: 1 2, on right: 0 1 5 18 28
+    on left: 1 2, on right: 0 1 5 11 18 28 31
 line (49)
     on left: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18, on right: 1
-    7 10 11 13 16 17 31
+    7 10 13 16 17
 argument_variables (50)
     on left: 19 20 21, on right: 18 20
 exp (51)
@@ -301,7 +301,7 @@ State 11
 
 State 12
 
-   11 line: KEYWORD_SWITCH . ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH . ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
     ARGUMENT_OPENBRACKET  shift, and go to state 35
 
@@ -534,7 +534,7 @@ State 34
 
 State 35
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET . IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET . IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
     IDENTIFIER  shift, and go to state 58
 
@@ -865,7 +865,7 @@ State 57
 
 State 58
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER . ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER . ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
     ARGUMENT_CLOSEBRACKET  shift, and go to state 84
 
@@ -1266,7 +1266,7 @@ State 83
 
 State 84
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET . SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET . SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
     SCOPE_BRACEOPEN  shift, and go to state 105
 
@@ -1492,7 +1492,7 @@ State 104
 
 State 105
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN . case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN . case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
     KEYWORD_CASE  shift, and go to state 113
 
@@ -1590,7 +1590,7 @@ State 112
 
 State 113
 
-   31 case_statment: KEYWORD_CASE . value COLON line KEYWORD_BREAK SEMICOLON case_statment
+   31 case_statment: KEYWORD_CASE . value COLON code KEYWORD_BREAK SEMICOLON case_statment
 
     IDENTIFIER      shift, and go to state 38
     OPERATOR_PLUS   shift, and go to state 15
@@ -1605,7 +1605,7 @@ State 113
 
 State 114
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment . KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment . KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
     KEYWORD_DEFAULT  shift, and go to state 120
 
@@ -1661,14 +1661,14 @@ State 118
 
 State 119
 
-   31 case_statment: KEYWORD_CASE value . COLON line KEYWORD_BREAK SEMICOLON case_statment
+   31 case_statment: KEYWORD_CASE value . COLON code KEYWORD_BREAK SEMICOLON case_statment
 
     COLON  shift, and go to state 124
 
 
 State 120
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT . COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT . COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
     COLON  shift, and go to state 125
 
@@ -1735,64 +1735,20 @@ State 123
 
 State 124
 
-   31 case_statment: KEYWORD_CASE value COLON . line KEYWORD_BREAK SEMICOLON case_statment
+   31 case_statment: KEYWORD_CASE value COLON . code KEYWORD_BREAK SEMICOLON case_statment
 
-    TYPE_INT              shift, and go to state 3
-    TYPE_BOOL             shift, and go to state 4
-    TYPE_CHAR             shift, and go to state 5
-    TYPE_FLOAT            shift, and go to state 6
-    TYPE_CONSTANT         shift, and go to state 7
-    TYPE_STRING           shift, and go to state 8
-    KEYWORD_IF            shift, and go to state 9
-    KEYWORD_WHILE         shift, and go to state 10
-    KEYWORD_DO            shift, and go to state 11
-    KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_FOR           shift, and go to state 13
-    IDENTIFIER            shift, and go to state 14
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 17
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
+    $default  reduce using rule 2 (code)
 
-    line      go to state 128
-    exp       go to state 24
-    datatype  go to state 25
-    value     go to state 26
+    code  go to state 128
 
 
 State 125
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON . line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON . code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
-    TYPE_INT              shift, and go to state 3
-    TYPE_BOOL             shift, and go to state 4
-    TYPE_CHAR             shift, and go to state 5
-    TYPE_FLOAT            shift, and go to state 6
-    TYPE_CONSTANT         shift, and go to state 7
-    TYPE_STRING           shift, and go to state 8
-    KEYWORD_IF            shift, and go to state 9
-    KEYWORD_WHILE         shift, and go to state 10
-    KEYWORD_DO            shift, and go to state 11
-    KEYWORD_SWITCH        shift, and go to state 12
-    KEYWORD_FOR           shift, and go to state 13
-    IDENTIFIER            shift, and go to state 14
-    OPERATOR_PLUS         shift, and go to state 15
-    OPERATOR_MINUS        shift, and go to state 16
-    SCOPE_BRACEOPEN       shift, and go to state 17
-    ARGUMENT_OPENBRACKET  shift, and go to state 18
-    VALUE_INT             shift, and go to state 19
-    VALUE_FLOAT           shift, and go to state 20
-    VALUE_BOOL            shift, and go to state 21
-    VALUE_CHAR            shift, and go to state 22
+    $default  reduce using rule 2 (code)
 
-    line      go to state 129
-    exp       go to state 24
-    datatype  go to state 25
-    value     go to state 26
+    code  go to state 129
 
 
 State 126
@@ -1816,16 +1772,68 @@ State 127
 
 State 128
 
-   31 case_statment: KEYWORD_CASE value COLON line . KEYWORD_BREAK SEMICOLON case_statment
+    1 code: code . line
+   31 case_statment: KEYWORD_CASE value COLON code . KEYWORD_BREAK SEMICOLON case_statment
 
-    KEYWORD_BREAK  shift, and go to state 131
+    TYPE_INT              shift, and go to state 3
+    TYPE_BOOL             shift, and go to state 4
+    TYPE_CHAR             shift, and go to state 5
+    TYPE_FLOAT            shift, and go to state 6
+    TYPE_CONSTANT         shift, and go to state 7
+    TYPE_STRING           shift, and go to state 8
+    KEYWORD_IF            shift, and go to state 9
+    KEYWORD_WHILE         shift, and go to state 10
+    KEYWORD_DO            shift, and go to state 11
+    KEYWORD_SWITCH        shift, and go to state 12
+    KEYWORD_BREAK         shift, and go to state 131
+    KEYWORD_FOR           shift, and go to state 13
+    IDENTIFIER            shift, and go to state 14
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    SCOPE_BRACEOPEN       shift, and go to state 17
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    line      go to state 23
+    exp       go to state 24
+    datatype  go to state 25
+    value     go to state 26
 
 
 State 129
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line . KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
+    1 code: code . line
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code . KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE
 
-    KEYWORD_BREAK  shift, and go to state 132
+    TYPE_INT              shift, and go to state 3
+    TYPE_BOOL             shift, and go to state 4
+    TYPE_CHAR             shift, and go to state 5
+    TYPE_FLOAT            shift, and go to state 6
+    TYPE_CONSTANT         shift, and go to state 7
+    TYPE_STRING           shift, and go to state 8
+    KEYWORD_IF            shift, and go to state 9
+    KEYWORD_WHILE         shift, and go to state 10
+    KEYWORD_DO            shift, and go to state 11
+    KEYWORD_SWITCH        shift, and go to state 12
+    KEYWORD_BREAK         shift, and go to state 132
+    KEYWORD_FOR           shift, and go to state 13
+    IDENTIFIER            shift, and go to state 14
+    OPERATOR_PLUS         shift, and go to state 15
+    OPERATOR_MINUS        shift, and go to state 16
+    SCOPE_BRACEOPEN       shift, and go to state 17
+    ARGUMENT_OPENBRACKET  shift, and go to state 18
+    VALUE_INT             shift, and go to state 19
+    VALUE_FLOAT           shift, and go to state 20
+    VALUE_BOOL            shift, and go to state 21
+    VALUE_CHAR            shift, and go to state 22
+
+    line      go to state 23
+    exp       go to state 24
+    datatype  go to state 25
+    value     go to state 26
 
 
 State 130
@@ -1838,14 +1846,14 @@ State 130
 
 State 131
 
-   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK . SEMICOLON case_statment
+   31 case_statment: KEYWORD_CASE value COLON code KEYWORD_BREAK . SEMICOLON case_statment
 
     SEMICOLON  shift, and go to state 134
 
 
 State 132
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK . SEMICOLON case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK . SEMICOLON case_statment SCOPE_BRACECLOSE
 
     SEMICOLON  shift, and go to state 135
 
@@ -1860,7 +1868,7 @@ State 133
 
 State 134
 
-   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON . case_statment
+   31 case_statment: KEYWORD_CASE value COLON code KEYWORD_BREAK SEMICOLON . case_statment
 
     KEYWORD_CASE  shift, and go to state 113
 
@@ -1871,7 +1879,7 @@ State 134
 
 State 135
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON . case_statment SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON . case_statment SCOPE_BRACECLOSE
 
     KEYWORD_CASE  shift, and go to state 113
 
@@ -1900,14 +1908,14 @@ State 136
 
 State 137
 
-   31 case_statment: KEYWORD_CASE value COLON line KEYWORD_BREAK SEMICOLON case_statment .
+   31 case_statment: KEYWORD_CASE value COLON code KEYWORD_BREAK SEMICOLON case_statment .
 
     $default  reduce using rule 31 (case_statment)
 
 
 State 138
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment . SCOPE_BRACECLOSE
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment . SCOPE_BRACECLOSE
 
     SCOPE_BRACECLOSE  shift, and go to state 140
 
@@ -1930,7 +1938,7 @@ State 139
 
 State 140
 
-   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON line KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE .
+   11 line: KEYWORD_SWITCH ARGUMENT_OPENBRACKET IDENTIFIER ARGUMENT_CLOSEBRACKET SCOPE_BRACEOPEN case_statment KEYWORD_DEFAULT COLON code KEYWORD_BREAK SEMICOLON case_statment SCOPE_BRACECLOSE .
 
     $default  reduce using rule 11 (line)
 
